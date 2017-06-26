@@ -10,4 +10,8 @@
     <string name="home_txt_cadastro">Não tem cadastro? Clique aqui!</string>
     <string name="home_img_logo_content_description">Logo do aplicativo</string>
 
+        <!--erros-->
+    <string name="campo_vazio">Campo obrigatório!</string>
+    <string name="email_invalido">E-mail inválido!</string>
+
 </resources>

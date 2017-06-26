@@ -55,7 +55,7 @@
         android:layout_marginRight="24dp"
         android:layout_gravity="center"
         android:layout_marginTop="55dp"
-        android:onClick="login"
+        android:onClick="logar"
         />
 
     <Button
@@ -72,6 +72,6 @@
         android:focusable="false"
         android:layout_marginTop="90dp"
         android:layout_gravity="center"
-        android:onClick="cadastro"/>
+        android:onClick="cadastrar"/>
 
 </LinearLayout>

@@ -10,8 +10,23 @@
     <string name="home_txt_cadastro">Não tem cadastro? Clique aqui!</string>
     <string name="home_img_logo_content_description">Logo do aplicativo</string>
 
-        <!--erros-->
+    <!--erros-->
     <string name="campo_vazio">Campo obrigatório!</string>
     <string name="email_invalido">E-mail inválido!</string>
+
+    <!--Tela Cadastro de usuario-->
+    <string name="home_text">Cadastre-se para melhor experiência.</string> <!--verificar se a frase está boa!-->
+    <string name="home_edt_nome">Nome e Sobrenome</string>
+    <!--string name="home_edt_sobreNome">SobreNome</string-->
+    <string name="home_edt_cadastroEmail">E-mail</string>
+    <string name="home_edt_cadastroSenha">Senha</string>
+    <string name="home_edt_repetirCadastroSenha">Repetir Senha</string>
+    <string name="home_edt_Data_nascimento">Data de nascimento</string>
+    <string name="home_text1">Sexo</string>
+    <string name="radBtMasculino">Masculino</string>
+    <string name="radBtFeminino">Feminino</string>
+    <string name="home_btn_cadastrar">Cadastrar</string>
+    <string name="campo_obrigatorio">Campo Obrigatório</string>
+
 
 </resources>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="@color/colorLogoBackground">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/home_text"
+        android:textStyle="normal"
+        android:textColor="@color/colorWhite"
+        />
+
+    <EditText
+        android:id="@+id/userNome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="8dp"
+        android:inputType="textPersonName"
+        android:hint="@string/home_edt_nome"
+        android:textColor="@color/colorLogoGreen"
+        android:textColorHint="@color/colorWhite"
+        />
+
+    <EditText
+        android:id="@+id/userEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp"
+        android:inputType="textEmailAddress"
+        android:hint="@string/home_edt_email"
+        android:textColor="@color/colorLogoGreen"
+        android:textColorHint="@color/colorWhite"
+        />
+
+    <EditText
+        android:id="@+id/userSenha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="8dp"
+        android:inputType="textPassword"
+        android:hint="@string/home_edt_cadastroSenha"
+        android:textColor="@color/colorLogoGreen"
+        android:textColorHint="@color/colorWhite"
+        />
+
+    <EditText
+        android:id="@+id/userRepetirSenha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="8dp"
+        android:inputType="textPassword"
+        android:hint="@string/home_edt_repetirCadastroSenha"
+        android:textColor="@color/colorLogoGreen"
+        android:textColorHint="@color/colorWhite"
+        />
+
+    <EditText
+        android:id="@+id/textData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_gravity="center"
+        android:text="@string/home_edt_Data_nascimento"
+        android:textColor="@color/colorWhite"/>
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:text="@string/home_text1"
+        android:textStyle="normal"
+        android:textColor="@color/colorWhite"
+        />
+
+    <RadioGroup
+        android:id="@+id/radioGenero"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        <RadioButton
+            android:id="@+id/radioButton1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:text="@string/radBtMasculino"
+            android:textColor="@color/colorWhite"
+            android:checked="true" />
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:text="@string/radBtFeminino"
+            android:textColor="@color/colorWhite"
+            />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_cadastrarUsuario"
+        android:text="@string/home_btn_cadastrar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:onClick="CadastrarUsuario"
+        />
+
+</LinearLayout>

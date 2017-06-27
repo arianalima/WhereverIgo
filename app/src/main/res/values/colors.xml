@@ -2,8 +2,6 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-
     <color name="colorLogoBackground">#202729</color>
     <color name="colorLogoGreen">#00CE92</color>
     <color name="colorWhite">#FFFFFF</color>

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -138,16 +139,18 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 //GuiUtil.exibirSaudacao(this);
                 startNavigationActivity();
 
-            }catch (WhereverIgoException e){
+            } catch (Exception e) {
+                Toast.makeText(getApplication(), e.getMessage(), Toast.LENGTH_LONG).show();
+            //}catch (WhereverIgoException e){
                 //GuiUtil.exibirMsg(LoginActivity.this, e.getMessage());
 
             }
         }
     }
-
+    //metodo chama o cadastro
     public void startSignUpActivity() {
-        //Intent i = new Intent(LoginActivity.this,CadastroActivity.class);
-        //startActivity(i);
+        Intent i = new Intent(LoginActivity.this,CadastroUsuarioActivity.class);
+        startActivity(i);
     }
 
     public void startNavigationActivity() {

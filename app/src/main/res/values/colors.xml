@@ -5,4 +5,7 @@
     <color name="colorLogoBackground">#202729</color>
     <color name="colorLogoGreen">#00CE92</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="cinza">#C0C0C0</color>
+    <color name="dourado">#DAA520</color>
+
 </resources>

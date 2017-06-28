@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Tela Locais Sugeridos-->
+    <string name="locais_txt_mensagem"><u>Sem ideias? Veja algumas dicas de destino!</u></string>
+
+    <!--Tela Questionário-->
+    <string name="questionario_txt_mensagem">Marque o que indentifica sua viagem</string>
+</resources>

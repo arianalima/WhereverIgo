@@ -115,8 +115,8 @@
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
             android:text="@string/radBtMasculino"
-            android:textColor="@color/colorWhite"
-            android:checked="true" />
+            android:textColor="@color/colorWhite"/>
+            <!--android:checked="true" />-->
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="fill_parent"

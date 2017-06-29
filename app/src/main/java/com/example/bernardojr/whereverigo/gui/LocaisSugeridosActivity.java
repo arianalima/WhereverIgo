@@ -1,4 +1,4 @@
-package com.example.bernardojr.whereverigo;
+package com.example.bernardojr.whereverigo.gui;
 
 import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Local;
 
 import java.util.List;

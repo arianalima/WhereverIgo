@@ -1,4 +1,4 @@
-package com.example.bernardojr.whereverigo;
+package com.example.bernardojr.whereverigo.infra;
 
 import java.util.HashMap;
 

@@ -1,4 +1,4 @@
-package com.example.bernardojr.whereverigo;
+package com.example.bernardojr.whereverigo.gui;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -11,13 +11,10 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Genero;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CadastroUsuarioActivity extends Activity {
 

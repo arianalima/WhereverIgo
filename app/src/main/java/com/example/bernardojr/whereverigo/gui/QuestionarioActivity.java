@@ -1,4 +1,4 @@
-package com.example.bernardojr.whereverigo;
+package com.example.bernardojr.whereverigo.gui;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+
+import com.example.bernardojr.whereverigo.R;
 
 import static com.example.bernardojr.whereverigo.R.id.questionario_recycler_view;
 

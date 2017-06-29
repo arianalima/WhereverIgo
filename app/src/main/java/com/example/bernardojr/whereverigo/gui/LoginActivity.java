@@ -1,4 +1,4 @@
-package com.example.bernardojr.whereverigo;
+package com.example.bernardojr.whereverigo.gui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.bernardojr.whereverigo.infra.Criptografia;
+import com.example.bernardojr.whereverigo.R;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -109,6 +112,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         if(regMatcher.matches()) {
             return true;
         }
+            edtEmail.requestFocus();
+            edtEmail.setError(resources.getString(R.string.email_invalido));
             return false;
     }
 
@@ -132,8 +137,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 String login = edtEmail.getText().toString();
                 String senha = edtSenha.getText().toString();
 
-                criptografia.receberSenhaOriginal(senha);
-                senhaCriptografada = criptografia.getSenhaCriptografada();
+                //criptografia.receberSenhaOriginal(senha);
+                //senhaCriptografada = criptografia.getSenhaCriptografada();
 
                 //usuario = usuarioNegocio.logar(login, senhaCriptografada);
                 //GuiUtil.exibirSaudacao(this);
@@ -154,8 +159,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
     public void startNavigationActivity() {
-        startActivity(new Intent(this, HomeActivity.class));
-        finish();
+        startActivity(new Intent(this, QuestionarioActivity.class));
     }
 
     public static Context getContexto(){ return contexto; }

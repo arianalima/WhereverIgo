@@ -4,15 +4,16 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.bernardojr.whereverigo.R;
-import com.example.bernardojr.whereverigo.dominio.Genero;
 
 import java.util.Calendar;
 
@@ -20,9 +21,10 @@ public class CadastroUsuarioActivity extends Activity {
 
     private EditText textNome, textEmail, textSenha, textRepetirSenha;
     private EditText textDataNascimento;
-    private Button cadastrarUsuario;
+    private Button buttonCadastrar;
+    private RadioGroup radioGroup;
     private RadioButton buttonMasculino, buttonFeminino;
-    private Genero genero;
+    private String sexo;
 
     private Calendar calendar = Calendar.getInstance();
     private int year;
@@ -30,7 +32,6 @@ public class CadastroUsuarioActivity extends Activity {
     private int day;
 
     private String dataNascimento1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,8 @@ public class CadastroUsuarioActivity extends Activity {
         textSenha = (EditText) findViewById(R.id.userSenha);
         textRepetirSenha = (EditText) findViewById(R.id.userRepetirSenha);
         textDataNascimento= (EditText) findViewById(R.id.textData);
-        cadastrarUsuario = (Button) findViewById(R.id.btn_cadastrarUsuario);
+        buttonCadastrar = (Button) findViewById(R.id.btn_cadastrarUsuario);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGenero);
         buttonMasculino = (RadioButton) findViewById(R.id.radioButton1);
         buttonFeminino = (RadioButton) findViewById(R.id.radioButton2);
         textDataNascimento.setOnClickListener(new View.OnClickListener() {
@@ -56,36 +58,18 @@ public class CadastroUsuarioActivity extends Activity {
 
         //chamar metodos
         chamarBotaoCadastrar();
+
     }
 
     public void chamarBotaoCadastrar(){
-
-        cadastrarUsuario.setOnClickListener(new View.OnClickListener() {
+        buttonCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 setCadastrarUsuario();
 
-                buttonMasculino.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(CadastroUsuarioActivity.this, "Elemento masculino marcado", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                buttonFeminino.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(CadastroUsuarioActivity.this,"Elemento feminino marcado",Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         });
-    }
-
-    public void setCadastrarUsuario(){
-        if (validacaoCadastro()){
-
-        }
     }
 
     private boolean validacaoCadastro(){
@@ -94,8 +78,46 @@ public class CadastroUsuarioActivity extends Activity {
         String senha = textSenha.getText().toString().trim();
         String repetirSenha = textRepetirSenha.getText().toString().trim();
         String dataNascimento = textDataNascimento.getText().toString().trim();
+        adcionandoGenero();
 
-        return (!validaCamposVazios(nome,email,senha,repetirSenha,dataNascimento)&&validarEmail(email));
+        Log.i("Script", "verificando nome "+ nome);
+        Log.i("Script", "verificando email "+ email);
+        Log.i("Script", "verificando data de nascimento "+ dataNascimento);
+        Log.i("Script", "verificando Genero selecionado "+ adcionandoGenero());
+
+        return (!validaCamposVazios(nome,email,senha,repetirSenha,dataNascimento)&&validarEmail(email)&&camposSemEspacos(nome,email,senha,repetirSenha,dataNascimento));
+
+    }
+
+    private String adcionandoGenero(){
+        final String masculino = buttonMasculino.getText().toString().trim();
+        final String feminino = buttonFeminino.getText().toString().trim();
+
+        try {
+            radioGroup.setOnCheckedChangeListener(
+                    new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+                            boolean buttonMasculino = R.id.radioButton1 == checkedId;
+                            boolean buttonFeminino = R.id.radioButton2 == checkedId;
+                            switch (checkedId){
+                                case R.id.radioButton1:
+                                    if (buttonMasculino)
+                                        sexo = masculino;
+                                    break;
+                                case R.id.radioButton2:
+                                    if(buttonFeminino)
+                                        sexo = feminino;
+                                    break;
+                            }
+                            Log.i("Script", "OK "+ sexo);
+
+                        }
+                    });
+        }catch (Exception e){
+            Toast.makeText(getApplication(),e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+        return sexo;
     }
 
     private boolean validaCamposVazios(String nome, String email, String senha, String repetirSenha, String dataNascimento){
@@ -123,6 +145,31 @@ public class CadastroUsuarioActivity extends Activity {
         return false;
     }
 
+    private boolean camposSemEspacos(String nome, String email, String senha, String repetirSenha, String dataNascimento){
+        if(nome.indexOf(" ") != -1){
+            textNome.requestFocus();
+            textNome.setError(getResources().getString(R.string.campo_invalido));
+            return true;
+        }else if (email.indexOf(" ") != -1){
+            textEmail.requestFocus();
+            textEmail.setError(getResources().getString(R.string.email_invalido));
+            return  true;
+        }else if (senha.indexOf(" ") != -1){
+            textSenha.requestFocus();
+            textSenha.setError(getResources().getString(R.string.campo_invalido));
+            return  true;
+        }else  if (repetirSenha.indexOf(" ") != -1){
+            textRepetirSenha.requestFocus();
+            textRepetirSenha.setError(getResources().getString(R.string.campo_invalido));
+            return true;
+        }else if(dataNascimento.indexOf(" ") != -1){
+            textDataNascimento.requestFocus();
+            textDataNascimento.setError(getResources().getString(R.string.campo_data_nascimento));
+            return  true;
+        }
+        return false;
+    }
+
     private boolean validarEmail(CharSequence email) {
         if (!(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())){
             textEmail.requestFocus();
@@ -131,21 +178,6 @@ public class CadastroUsuarioActivity extends Activity {
         }
         return true;
     }
-
-//    public boolean validarRadioButtonGenero(View view){
-//        boolean checked =((RadioButton) view).isChecked();
-//        switch (view.getId()){
-//            case R.id.radioButton1:
-//                if(checked)
-//                    Toast.makeText(getApplicationContext(),"Elemento masculino marcado", Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.radioButton2:
-//                if(checked)
-//                    Toast.makeText(getApplicationContext(),"Elemento feminino marcado", Toast.LENGTH_SHORT).show();
-//                break;
-//        }
-//        return checked;
-//    }
 
     private void setDataNascimento() {
         year = calendar.get(Calendar.YEAR);
@@ -164,6 +196,12 @@ public class CadastroUsuarioActivity extends Activity {
             }
         }, year, month, day);
         datepicker.show();
+    }
+
+    public void setCadastrarUsuario(){
+        if (validacaoCadastro()){
+
+        }
     }
 
 }

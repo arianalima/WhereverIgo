@@ -9,4 +9,7 @@ public enum Genero {
     private Genero(int codigo){
         this.codigo = codigo;
     }
+    public int getCodigo(){
+        return codigo;
+    }
 }

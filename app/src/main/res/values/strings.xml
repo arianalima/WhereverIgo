@@ -13,6 +13,7 @@
     <!--erros-->
     <string name="campo_vazio">Campo obrigatório!</string>
     <string name="email_invalido">E-mail inválido!</string>
+    <string name="campo_invalido">Campo Inválido</string>
 
     <!--Tela Cadastro de usuario-->
     <string name="home_text">Cadastre-se para melhor experiência.</string> <!--verificar se a frase está boa!-->
@@ -27,6 +28,7 @@
     <string name="radBtFeminino">Feminino</string>
     <string name="home_btn_cadastrar">Cadastrar</string>
     <string name="campo_obrigatorio">Campo Obrigatório</string>
+    <string name="campo_data_nascimento">Informe a data de nascimento</string>
 
 
 

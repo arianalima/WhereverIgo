@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -14,23 +13,30 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.bernardojr.whereverigo.R;
+import com.example.bernardojr.whereverigo.dominio.Usuario;
+import com.example.bernardojr.whereverigo.dominio.Pessoa;
 
 import java.util.Calendar;
 
 public class CadastroUsuarioActivity extends Activity {
 
-    private EditText textNome, textEmail, textSenha, textRepetirSenha;
-    private EditText textDataNascimento;
+    private EditText textNome, textEmail, textSenha, textRepetirSenha, textDataNascimento;
     private Button buttonCadastrar;
     private RadioGroup radioGroup;
     private RadioButton buttonMasculino, buttonFeminino;
-    private String sexo;
+
+    private String genero;
+    private String nome;
+    private String email;
+    private String senha;
+    private String repetirSenha;
+    private String dataNascimento;
+    private String sexoEscolhido;
 
     private Calendar calendar = Calendar.getInstance();
     private int year;
     private int month;
     private int day;
-
     private String dataNascimento1;
 
     @Override
@@ -55,45 +61,35 @@ public class CadastroUsuarioActivity extends Activity {
                 definirDataNascimento();
             }
         });
-
-        //chamar metodos
         chamarBotaoCadastrar();
-
     }
 
     public void chamarBotaoCadastrar(){
         buttonCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 setCadastrarUsuario();
-
             }
         });
     }
 
-    private boolean validacaoCadastro(){
-        String nome = textNome.getText().toString().trim();
-        String email = textEmail.getText().toString().trim();
-        String senha = textSenha.getText().toString().trim();
-        String repetirSenha = textRepetirSenha.getText().toString().trim();
-        String dataNascimento = textDataNascimento.getText().toString().trim();
-        adcionandoGenero();
+    private boolean validacaoDeCadastro(){
+        nome = textNome.getText().toString().trim();
+        email = textEmail.getText().toString().trim();
+        senha = textSenha.getText().toString().trim();
+        repetirSenha = textRepetirSenha.getText().toString().trim();
+        dataNascimento = textDataNascimento.getText().toString().trim();
+        sexoEscolhido = adcionandoGenero();
 
-        Log.i("Script", "verificando nome "+ nome);
-        Log.i("Script", "verificando email "+ email);
-        Log.i("Script", "verificando data de nascimento "+ dataNascimento);
-        Log.i("Script", "verificando Genero selecionado "+ adcionandoGenero());
-
-        return (!validaCamposVazios(nome,email,senha,repetirSenha,dataNascimento)&&validarEmail(email)&&camposSemEspacos(nome,email,senha,repetirSenha,dataNascimento));
-
+        return (!validaCamposVazios(nome,email,senha,repetirSenha,dataNascimento,sexoEscolhido)&&
+                !camposComEspacos(email,senha,repetirSenha,dataNascimento)&&
+                tamanhoPreenchido(senha,repetirSenha)&&validarEmail(email));
     }
 
     private String adcionandoGenero(){
-        final String masculino = buttonMasculino.getText().toString().trim();
+        final String maculino = buttonMasculino.getText().toString().trim();
         final String feminino = buttonFeminino.getText().toString().trim();
 
-        try {
             radioGroup.setOnCheckedChangeListener(
                     new RadioGroup.OnCheckedChangeListener() {
                         @Override
@@ -103,80 +99,88 @@ public class CadastroUsuarioActivity extends Activity {
                             switch (checkedId){
                                 case R.id.radioButton1:
                                     if (buttonMasculino)
-                                        sexo = masculino;
+                                        genero = maculino;
                                     break;
                                 case R.id.radioButton2:
                                     if(buttonFeminino)
-                                        sexo = feminino;
+                                        genero = feminino;
                                     break;
                             }
-                            Log.i("Script", "OK "+ sexo);
-
                         }
                     });
-        }catch (Exception e){
-            Toast.makeText(getApplication(),e.getMessage(),Toast.LENGTH_LONG).show();
-        }
-        return sexo;
+        return genero;
     }
 
-    private boolean validaCamposVazios(String nome, String email, String senha, String repetirSenha, String dataNascimento){
+    private boolean validaCamposVazios(String nome, String email, String senha, String repetirSenha, String dataNascimento, String sexoEscolhido){
+        boolean validacao = false;
         if (TextUtils.isEmpty(nome)){
+            validacao = true;
             textNome.requestFocus();
-            textNome.setError(getResources().getString(R.string.campo_vazio));
-            return true;
+            textNome.setError(getString(R.string.campo_vazio));
         }else if(TextUtils.isEmpty(email)){
+            validacao = true;
             textEmail.requestFocus();
-            textEmail.setError(getResources().getString(R.string.campo_vazio));
-            return true;
+            textEmail.setError(getString(R.string.campo_vazio));
         }else if (TextUtils.isEmpty(senha)){
+            validacao = true;
             textSenha.requestFocus();
-            textSenha.setError(getResources().getString(R.string.campo_vazio));
-            return true;
+            textSenha.setError(getString(R.string.campo_vazio));
         }else if (TextUtils.isEmpty(repetirSenha)){
+            validacao = true;
             textRepetirSenha.requestFocus();
-            textRepetirSenha.setError(getResources().getString(R.string.campo_vazio));
-            return true;
-        }else if (TextUtils.isEmpty(dataNascimento)){
+            textRepetirSenha.setError(getString(R.string.campo_vazio));
+        }else if (TextUtils.isEmpty(dataNascimento)) {
+            validacao = true;
             textDataNascimento.requestFocus();
-            textDataNascimento.setError(getResources().getString(R.string.campo_vazio));
-            return true;
-        }
-        return false;
+            textDataNascimento.setError(getString(R.string.campo_vazio));
+        }return validacao;
     }
 
-    private boolean camposSemEspacos(String nome, String email, String senha, String repetirSenha, String dataNascimento){
-        if(nome.indexOf(" ") != -1){
-            textNome.requestFocus();
-            textNome.setError(getResources().getString(R.string.campo_invalido));
-            return true;
-        }else if (email.indexOf(" ") != -1){
+    private boolean camposComEspacos(String email, String senha, String repetirSenha, String dataNascimento){
+        if (email.indexOf(" ") != -1){
             textEmail.requestFocus();
-            textEmail.setError(getResources().getString(R.string.email_invalido));
+            textEmail.setError(getString(R.string.email_invalido));
             return  true;
         }else if (senha.indexOf(" ") != -1){
             textSenha.requestFocus();
-            textSenha.setError(getResources().getString(R.string.campo_invalido));
+            textSenha.setError(getString(R.string.campo_invalido));
             return  true;
-        }else  if (repetirSenha.indexOf(" ") != -1){
+        }else  if (repetirSenha.indexOf(" ") != -1) {
             textRepetirSenha.requestFocus();
-            textRepetirSenha.setError(getResources().getString(R.string.campo_invalido));
+            textRepetirSenha.setError(getString(R.string.campo_invalido));
             return true;
-        }else if(dataNascimento.indexOf(" ") != -1){
+        }else  if (!(senha.equals(repetirSenha))){
+            textRepetirSenha.requestFocus();
+            textRepetirSenha.setError(getString(R.string.campo_senha_diferentes));
+            return true;
+        }else if(dataNascimento.indexOf(" ") != -1) {
             textDataNascimento.requestFocus();
-            textDataNascimento.setError(getResources().getString(R.string.campo_data_nascimento));
-            return  true;
-        }
-        return false;
+            textDataNascimento.setError(getString(R.string.campo_data_nascimento));
+            return true;
+        }else if (adcionandoGenero() == null || adcionandoGenero().equalsIgnoreCase("")) {
+            Toast.makeText(getApplication(), "Favor preencha a opção genero", Toast.LENGTH_LONG).show();
+            return true;
+        }return false;
+    }
+
+    private boolean tamanhoPreenchido(String senha, String repetirSenha){
+        if (!(senha.length() > 4)){
+            textSenha.requestFocus();
+            textSenha.setError(getString(R.string.senha_curta));
+            return false;
+        }else if (!(repetirSenha.length()> 4)){
+            textRepetirSenha.requestFocus();
+            textRepetirSenha.setError(getString(R.string.senha_curta));
+            return false;
+        }return true;
     }
 
     private boolean validarEmail(CharSequence email) {
         if (!(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())){
             textEmail.requestFocus();
-            textEmail.setError(getResources().getString(R.string.email_invalido));
+            textEmail.setError(getString(R.string.email_invalido));
             return false;
-        }
-        return true;
+        }return true;
     }
 
     private void setDataNascimento() {
@@ -199,12 +203,24 @@ public class CadastroUsuarioActivity extends Activity {
     }
 
     public void setCadastrarUsuario(){
-        if (validacaoCadastro()){
+        if (validacaoDeCadastro()){
 
+            try {
+                Pessoa pessoa = new Pessoa();
+                pessoa.setNome(nome);
+                pessoa.setEmail(email);
+                pessoa.setDataNascimento(dataNascimento);
+                pessoa.setSexo(sexoEscolhido);
+
+                Usuario usuario = new Usuario();
+                usuario.setSenha(senha);
+
+                Toast.makeText(getApplication(),"Usuário cadastrado",Toast.LENGTH_SHORT).show();
+                finish();
+
+            }catch (Exception e){
+                Toast.makeText(getApplication(),"Usuário não cadastrado",Toast.LENGTH_LONG).show();
+            }
         }
     }
-
 }
-
-
-

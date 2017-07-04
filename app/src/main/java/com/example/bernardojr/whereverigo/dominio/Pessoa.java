@@ -6,13 +6,17 @@ public class Pessoa {
     private String nome;
     private String email;
     private String dataNascimento;
-    private Enum<Genero> generoEnum;
+    private String sexo;
 
-    public Pessoa(String nome, String email, String dataNascimento,Enum<Genero> generoEnum){
+    public Pessoa(String nome, String email, String dataNascimento,String sexo){
         this.nome = nome;
         this.email = email;
         this.dataNascimento = dataNascimento;
-        this.generoEnum = generoEnum;
+        this.sexo = sexo;
+    }
+
+    public Pessoa(){
+
     }
 
     public int getId() {
@@ -55,11 +59,11 @@ public class Pessoa {
         this.dataNascimento = dataNascimento;
     }
 
-    public Enum<Genero> getGeneroEnum() {
-        return generoEnum;
+    public String getGeneroEnum(String genero) {
+        return sexo;
     }
 
-    public void setGeneroEnum(Enum<Genero> generoEnum) {
-        this.generoEnum = generoEnum;
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
     }
 }

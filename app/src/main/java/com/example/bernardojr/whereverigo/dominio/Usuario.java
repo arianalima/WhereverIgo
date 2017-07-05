@@ -1,15 +1,22 @@
 package com.example.bernardojr.whereverigo.dominio;
 
-import java.util.Date;
-
 public class Usuario {
 
+    private int id;
     private String senha;
-    private String repetirSenha;
 
-    public Usuario(){
+    Pessoa pessoa = new Pessoa();
+
+    public Usuario() {
         this.senha = null;
-        this.repetirSenha = null;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSenha() {
@@ -20,12 +27,8 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public String getRepetirSenha() {
-        return repetirSenha;
+    public String setEmailLogin(String email){
+        email = pessoa.getEmail();
+        return email;
     }
-
-    public void setRepetirSenha(String repetirSenha) {
-        this.repetirSenha = repetirSenha;
-    }
-
 }

@@ -87,7 +87,7 @@ public class CadastroUsuarioActivity extends Activity {
     }
 
     private String adcionandoGenero(){
-        final String maculino = buttonMasculino.getText().toString().trim();
+        final String masculino = buttonMasculino.getText().toString().trim();
         final String feminino = buttonFeminino.getText().toString().trim();
 
             radioGroup.setOnCheckedChangeListener(
@@ -99,7 +99,7 @@ public class CadastroUsuarioActivity extends Activity {
                             switch (checkedId){
                                 case R.id.radioButton1:
                                     if (buttonMasculino)
-                                        genero = maculino;
+                                        genero = masculino;
                                     break;
                                 case R.id.radioButton2:
                                     if(buttonFeminino)
@@ -214,6 +214,7 @@ public class CadastroUsuarioActivity extends Activity {
 
                 Usuario usuario = new Usuario();
                 usuario.setSenha(senha);
+                //usuario.setEmailLogin(email);
 
                 Toast.makeText(getApplication(),"Usuário cadastrado",Toast.LENGTH_SHORT).show();
                 finish();

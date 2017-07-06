@@ -206,17 +206,19 @@ public class CadastroUsuarioActivity extends Activity {
         if (validacaoDeCadastro()){
 
             try {
-                Pessoa pessoa = new Pessoa();
-                pessoa.setNome(nome);
-                pessoa.setEmail(email);
-                pessoa.setDataNascimento(dataNascimento);
-                pessoa.setSexo(sexoEscolhido);
-
                 Usuario usuario = new Usuario();
                 usuario.setSenha(senha);
-                //usuario.setEmailLogin(email);
+                usuario.setEmail(email);
 
-                Toast.makeText(getApplication(),"Usuário cadastrado",Toast.LENGTH_SHORT).show();
+                Pessoa pessoa = new Pessoa();
+                pessoa.setNome(nome);
+                pessoa.setDataNascimento(dataNascimento);
+                pessoa.setSexo(sexoEscolhido);
+                pessoa.setUsuario(usuario);
+
+                //chamar aqui o metodo de negocio com parametro "pessoa".
+                Toast.makeText(getApplication(),"Cadastro realizado!",Toast.LENGTH_SHORT).show();
+                //chamar metodo para retornar a LoginActivity
                 finish();
 
             }catch (Exception e){

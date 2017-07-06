@@ -30,7 +30,6 @@
     <string name="campo_data_nascimento">Informe a data de nascimento</string>
     <string name="campo_senha_diferentes">Senhas são diferentes</string>
     <string name="campo_genero">Escolha um genero</string>
-
     <string name="senha_curta">Sua senha deve ter mais de 4 caracteres!</string>
     <string name="cadastro_senhas_diferentes">Senhas diferentes</string>
 

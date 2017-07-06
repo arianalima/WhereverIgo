@@ -1,14 +1,20 @@
 package com.example.bernardojr.whereverigo.dominio;
 
-public class Usuario {
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
 
     private int id;
+    private String email;
     private String senha;
 
-    Pessoa pessoa = new Pessoa();
+    public Usuario(String email, String senha) {
+        this.email = email;
+        this.senha = senha;
+    }
 
-    public Usuario() {
-        this.senha = null;
+    public Usuario(){
+
     }
 
     public int getId() {
@@ -27,8 +33,11 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public String setEmailLogin(String email){
-        email = pessoa.getEmail();
+    public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

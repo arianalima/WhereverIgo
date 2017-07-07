@@ -21,12 +21,11 @@ public class Criptografia {
     public void receberSenhaOriginal(String senha){
         criptografia.setSenhaOriginal(senha);
     }
-
     public String getSenhaCriptografada() {
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < senha.length(); i++) {
-            sb.append(valores.get(senha.charAt(i)));
+        for (int i = 0; i < this.senha.length(); i++) {
+            sb.append(valores.get(this.senha.charAt(i)));
         }
         return sb.toString();
     }

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Usuario;
 import com.example.bernardojr.whereverigo.dominio.Pessoa;
+import com.example.bernardojr.whereverigo.negocio.UsuarioNegocio;
 
 import java.util.Calendar;
 
@@ -24,6 +25,8 @@ public class CadastroUsuarioActivity extends Activity {
     private Button buttonCadastrar;
     private RadioGroup radioGroup;
     private RadioButton buttonMasculino, buttonFeminino;
+
+    private UsuarioNegocio usuarioNegocio = UsuarioNegocio.getInstancia();
 
     private String genero;
     private String nome;
@@ -216,7 +219,7 @@ public class CadastroUsuarioActivity extends Activity {
                 pessoa.setSexo(sexoEscolhido);
                 pessoa.setUsuario(usuario);
 
-                //chamar aqui o metodo de negocio com parametro "pessoa".
+                //usuarioNegocio.inserirUsuario(usuario);
                 Toast.makeText(getApplication(),"Cadastro realizado!",Toast.LENGTH_SHORT).show();
                 //chamar metodo para retornar a LoginActivity
                 finish();

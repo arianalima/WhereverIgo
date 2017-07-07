@@ -82,14 +82,14 @@ public class CadastroUsuarioActivity extends Activity {
         senha = textSenha.getText().toString().trim();
         repetirSenha = textRepetirSenha.getText().toString().trim();
         dataNascimento = textDataNascimento.getText().toString().trim();
-        sexoEscolhido = adcionandoGenero();
+        sexoEscolhido = adicionandoGenero();
 
         return (!validaCamposVazios(nome,email,senha,repetirSenha,dataNascimento,sexoEscolhido)&&
                 !camposComEspacos(email,senha,repetirSenha,dataNascimento)&&
                 tamanhoPreenchido(senha,repetirSenha)&&validarEmail(email));
     }
 
-    private String adcionandoGenero(){
+    private String adicionandoGenero(){
         final String masculino = buttonMasculino.getText().toString().trim();
         final String feminino = buttonFeminino.getText().toString().trim();
 
@@ -160,7 +160,7 @@ public class CadastroUsuarioActivity extends Activity {
             textDataNascimento.requestFocus();
             textDataNascimento.setError(getString(R.string.campo_data_nascimento));
             return true;
-        }else if (adcionandoGenero() == null || adcionandoGenero().equalsIgnoreCase("")) {
+        }else if (adicionandoGenero() == null || adicionandoGenero().equalsIgnoreCase("")) {
             Toast.makeText(getApplication(), "Favor preencha a opção genero", Toast.LENGTH_LONG).show();
             return true;
         }return false;

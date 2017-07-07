@@ -14,8 +14,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.bernardojr.whereverigo.dominio.Usuario;
 import com.example.bernardojr.whereverigo.infra.Criptografia;
 import com.example.bernardojr.whereverigo.R;
+import com.example.bernardojr.whereverigo.infra.WhereverIgoException;
+import com.example.bernardojr.whereverigo.negocio.UsuarioNegocio;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,8 +35,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     private Resources resources;
     private static Context contexto;
-    //private Usuario usuario;
-    //private UsuarioNegocio usuarioNegocio;
+    private Usuario usuario;
+    private UsuarioNegocio usuarioNegocio;
     private Criptografia criptografia;
     private String senhaCriptografada;
 
@@ -137,16 +140,15 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 String login = edtEmail.getText().toString();
                 String senha = edtSenha.getText().toString();
 
-                //criptografia.receberSenhaOriginal(senha);
-                //senhaCriptografada = criptografia.getSenhaCriptografada();
+                criptografia.receberSenhaOriginal(senha);
+                senhaCriptografada = criptografia.getSenhaCriptografada();
 
-                //usuario = usuarioNegocio.logar(login, senhaCriptografada);
+                usuario = usuarioNegocio.logar(login, senhaCriptografada);
                 //GuiUtil.exibirSaudacao(this);
-                startNavigationActivity();
+                startQuestionarioActivity();
 
-            } catch (Exception e) {
+            }catch (WhereverIgoException e){
                 Toast.makeText(getApplication(), e.getMessage(), Toast.LENGTH_LONG).show();
-            //}catch (WhereverIgoException e){
                 //GuiUtil.exibirMsg(LoginActivity.this, e.getMessage());
 
             }
@@ -158,7 +160,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         startActivity(i);
     }
 
-    public void startNavigationActivity() {
+    public void startQuestionarioActivity() {
         startActivity(new Intent(this, QuestionarioActivity.class));
     }
 

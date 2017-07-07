@@ -2,7 +2,10 @@ package com.example.bernardojr.whereverigo.negocio;
 
 import android.util.Log;
 
+import com.example.bernardojr.whereverigo.R;
+import com.example.bernardojr.whereverigo.dominio.Pessoa;
 import com.example.bernardojr.whereverigo.dominio.Usuario;
+import com.example.bernardojr.whereverigo.gui.LoginActivity;
 import com.example.bernardojr.whereverigo.infra.Criptografia;
 import com.example.bernardojr.whereverigo.infra.WhereverIgoException;
 
@@ -43,4 +46,30 @@ public class UsuarioNegocio {
             //usuarioDAO.inserirUsuario(usuario);
         }
     }
+
+    public Usuario logar(String login, String senha) throws WhereverIgoException {
+        Usuario usuario = null;
+        //Usuario usuario = usuarioDao.buscarUsuario(login, senha);
+        String loginInvalido = "";
+
+        if (usuario == null) {
+            loginInvalido = LoginActivity.getContexto().getString(R.string.login_invalido);
+        }
+        if (loginInvalido.length() > 0) {
+            throw new WhereverIgoException(loginInvalido);
+        }
+
+        SessaoUsuario sessaoUsuario = SessaoUsuario.getInstancia();
+        sessaoUsuario.setUsuarioLogado(usuario);
+        sessaoUsuario.setPessoaLogada(pesquisarPorId(usuario.getId()));
+
+        return usuario;
+    }
+
+    public Pessoa pesquisarPorId(int id) {
+        Pessoa pessoa = null;
+        //pessoa = usuarioDao.buscarPessoaId(id);
+        return pessoa;
+    }
+
 }

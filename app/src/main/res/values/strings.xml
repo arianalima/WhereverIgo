@@ -13,7 +13,8 @@
     <!--erros-->
     <string name="campo_vazio">Campo obrigatório!</string>
     <string name="email_invalido">E-mail inválido!</string>
-    <string name="campo_invalido">Campo Inválido</string>
+    <string name="campo_invalido">Campo Inválido!</string>
+    <string name="login_invalido">Login inválido!</string>
 
     <!--Tela Cadastro de usuario-->
     <string name="home_text">Cadastre-se para melhor experiência.</string> <!--verificar se a frase está boa!-->

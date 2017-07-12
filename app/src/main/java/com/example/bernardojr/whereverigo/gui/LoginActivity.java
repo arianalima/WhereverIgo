@@ -143,11 +143,12 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 criptografia.receberSenhaOriginal(senha);
                 senhaCriptografada = criptografia.getSenhaCriptografada();
 
-                usuario = usuarioNegocio.logar(login, senhaCriptografada);
+                //usuario = usuarioNegocio.logar(login, senhaCriptografada);
                 //GuiUtil.exibirSaudacao(this);
                 startQuestionarioActivity();
 
-            }catch (WhereverIgoException e){
+            }catch (Exception e){
+                //WhereverIgoException
                 Toast.makeText(getApplication(), e.getMessage(), Toast.LENGTH_LONG).show();
                 //GuiUtil.exibirMsg(LoginActivity.this, e.getMessage());
 

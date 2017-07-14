@@ -1,15 +1,16 @@
 package com.example.bernardojr.whereverigo.dominio;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Pessoa implements Serializable {
     private int id;
     private Usuario usuario;
     private String nome;
-    private String dataNascimento;
+    private Date dataNascimento;
     private String sexo;
 
-    public Pessoa(String nome, String dataNascimento,String sexo){
+    public Pessoa(String nome, Date dataNascimento,String sexo){
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.sexo = sexo;
@@ -43,15 +44,15 @@ public class Pessoa implements Serializable {
         this.nome = nome;
     }
 
-    public String getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
-    public String getGeneroEnum(String genero) {
+    public String getSexo(String genero) {
         return sexo;
     }
 

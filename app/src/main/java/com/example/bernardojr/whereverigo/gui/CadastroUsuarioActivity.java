@@ -17,7 +17,10 @@ import com.example.bernardojr.whereverigo.dominio.Usuario;
 import com.example.bernardojr.whereverigo.dominio.Pessoa;
 import com.example.bernardojr.whereverigo.negocio.UsuarioNegocio;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class CadastroUsuarioActivity extends Activity {
 
@@ -28,19 +31,19 @@ public class CadastroUsuarioActivity extends Activity {
 
     private UsuarioNegocio usuarioNegocio = UsuarioNegocio.getInstancia();
 
+    private Calendar calendar = Calendar.getInstance();
+    private int year;
+    private int month;
+    private int day;
+
     private String genero;
     private String nome;
     private String email;
     private String senha;
     private String repetirSenha;
-    private String dataNascimento;
+    private String dataNascimentoString;
     private String sexoEscolhido;
-
-    private Calendar calendar = Calendar.getInstance();
-    private int year;
-    private int month;
-    private int day;
-    private String dataNascimento1;
+    private Date dataNascimento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class CadastroUsuarioActivity extends Activity {
         textSenha = (EditText) findViewById(R.id.userSenha);
         textRepetirSenha = (EditText) findViewById(R.id.userRepetirSenha);
         textDataNascimento= (EditText) findViewById(R.id.textData);
+        textDataNascimento.setFocusable(false);
         buttonCadastrar = (Button) findViewById(R.id.btn_cadastrarUsuario);
         radioGroup = (RadioGroup) findViewById(R.id.radioGenero);
         buttonMasculino = (RadioButton) findViewById(R.id.radioButton1);
@@ -71,21 +75,31 @@ public class CadastroUsuarioActivity extends Activity {
         buttonCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setCadastrarUsuario();
+                try {
+                    setCadastrarUsuario();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    private boolean validacaoDeCadastro(){
+    private boolean validacaoDeCadastro() throws ParseException {
+
         nome = textNome.getText().toString().trim();
         email = textEmail.getText().toString().trim();
         senha = textSenha.getText().toString().trim();
         repetirSenha = textRepetirSenha.getText().toString().trim();
-        dataNascimento = textDataNascimento.getText().toString().trim();
         sexoEscolhido = adicionandoGenero();
-
-        return (!validaCamposVazios(nome,email,senha,repetirSenha,dataNascimento,sexoEscolhido)&&
-                !camposComEspacos(email,senha,repetirSenha,dataNascimento)&&
+        dataNascimentoString = textDataNascimento.getText().toString().trim();
+        try {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dataNascimento = dateFormat.parse(dataNascimentoString);
+        }catch (ParseException e){
+            Toast.makeText(getApplication(), "Preencha a data de nascimento", Toast.LENGTH_LONG).show();
+        }
+        return (!validaCamposVazios(nome,email,senha,repetirSenha, dataNascimentoString,sexoEscolhido)&&
+                !camposComEspacos(email,senha,repetirSenha, dataNascimentoString, dataNascimento)&&
                 tamanhoPreenchido(senha,repetirSenha)&&validarEmail(email));
     }
 
@@ -114,7 +128,7 @@ public class CadastroUsuarioActivity extends Activity {
         return genero;
     }
 
-    private boolean validaCamposVazios(String nome, String email, String senha, String repetirSenha, String dataNascimento, String sexoEscolhido){
+    private boolean validaCamposVazios(String nome, String email, String senha, String repetirSenha, String dataNascimentoString, String sexoEscolhido){
         boolean validacao = false;
         if (TextUtils.isEmpty(nome)){
             validacao = true;
@@ -132,14 +146,14 @@ public class CadastroUsuarioActivity extends Activity {
             validacao = true;
             textRepetirSenha.requestFocus();
             textRepetirSenha.setError(getString(R.string.campo_vazio));
-        }else if (TextUtils.isEmpty(dataNascimento)) {
+        }else if (TextUtils.isEmpty(dataNascimentoString)) {
             validacao = true;
             textDataNascimento.requestFocus();
             textDataNascimento.setError(getString(R.string.campo_vazio));
         }return validacao;
     }
 
-    private boolean camposComEspacos(String email, String senha, String repetirSenha, String dataNascimento){
+    private boolean camposComEspacos(String email, String senha, String repetirSenha, String dataNascimentoString, Date dataNascimento){
         if (email.indexOf(" ") != -1){
             textEmail.requestFocus();
             textEmail.setError(getString(R.string.email_invalido));
@@ -156,10 +170,14 @@ public class CadastroUsuarioActivity extends Activity {
             textRepetirSenha.requestFocus();
             textRepetirSenha.setError(getString(R.string.campo_senha_diferentes));
             return true;
-        }else if(dataNascimento.indexOf(" ") != -1) {
+        }else if(dataNascimentoString.indexOf(" ") != -1) {
             textDataNascimento.requestFocus();
             textDataNascimento.setError(getString(R.string.campo_data_nascimento));
             return true;
+        }else if (dataNascimento == null){
+            textDataNascimento.requestFocus();
+            textDataNascimento.setError(getString(R.string.campo_data_nascimento));
+            return  true;
         }else if (adicionandoGenero() == null || adicionandoGenero().equalsIgnoreCase("")) {
             Toast.makeText(getApplication(), "Favor preencha a opção genero", Toast.LENGTH_LONG).show();
             return true;
@@ -193,40 +211,39 @@ public class CadastroUsuarioActivity extends Activity {
     }
 
     public void definirDataNascimento(){
-        DatePickerDialog datepicker = new DatePickerDialog(CadastroUsuarioActivity.this, new DatePickerDialog.OnDateSetListener() {
+        final DatePickerDialog datepicker = new DatePickerDialog(CadastroUsuarioActivity.this, new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                int mesCerto = monthOfYear + 1;
+                int mesCerto = monthOfYear +1;
                 textDataNascimento.setText(dayOfMonth + "/" + mesCerto + "/" + year);
-                dataNascimento1 = dayOfMonth + "-" + monthOfYear + "-" + year;
+                dataNascimentoString = dayOfMonth + "-" + monthOfYear + "-" + year;
             }
         }, year, month, day);
         datepicker.show();
     }
 
-    public void setCadastrarUsuario(){
-        if (validacaoDeCadastro()){
+    public void setCadastrarUsuario() throws ParseException {
+            if (validacaoDeCadastro()){
 
-            try {
-                Usuario usuario = new Usuario();
-                usuario.setSenha(senha);
-                usuario.setEmail(email);
+                try {
+                    Usuario usuario = new Usuario();
+                    usuario.setSenha(senha);
+                    usuario.setEmail(email);
 
-                Pessoa pessoa = new Pessoa();
-                pessoa.setNome(nome);
-                pessoa.setDataNascimento(dataNascimento);
-                pessoa.setSexo(sexoEscolhido);
-                pessoa.setUsuario(usuario);
+                    Pessoa pessoa = new Pessoa();
+                    pessoa.setNome(nome);
+                    pessoa.setDataNascimento(dataNascimento);
+                    pessoa.setSexo(sexoEscolhido);
+                    pessoa.setUsuario(usuario);
 
-                //usuarioNegocio.inserirUsuario(usuario);
-                Toast.makeText(getApplication(),"Cadastro realizado!",Toast.LENGTH_SHORT).show();
-                //chamar metodo para retornar a LoginActivity
-                finish();
-
-            }catch (Exception e){
-                Toast.makeText(getApplication(),"Usuário não cadastrado",Toast.LENGTH_LONG).show();
+                    //usuarioNegocio.inserirUsuario(usuario);
+                    Toast.makeText(getApplication(),"Cadastro realizado!",Toast.LENGTH_SHORT).show();
+                    //chamar metodo para retornar a LoginActivity
+                    finish();
+                }catch (Exception e){
+                    Toast.makeText(getApplication(),"Usuário não cadastrado",Toast.LENGTH_LONG).show();
+                }
             }
-        }
     }
 }

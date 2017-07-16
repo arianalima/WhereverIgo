@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Wherever I go</string>
+    <string name="app_logo">Sua viagem do seu jeito</string>
 
     <!--Tela Login-->
     <string name="img_descricao">App Icon</string>
@@ -33,6 +34,20 @@
     <string name="campo_genero">Escolha um genero</string>
     <string name="senha_curta">Sua senha deve ter mais de 4 caracteres!</string>
     <string name="cadastro_senhas_diferentes">Senhas diferentes</string>
+    <string name="title_activity_home">HomeActivity</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+
+    <!--Tela Locais Sugeridos-->
+    <string name="locais_txt_mensagem"><u>Sem ideias? Veja algumas dicas de destino!</u></string>
+
+    <!--Tela Questionário-->
+    <string name="questionario_txt_mensagem">Marque o que mais te indentifica</string>
+    <string name="questionario_btn_prox">Próximo</string>
+    <string name="questionario_btn_terminar">Terminar</string>
 
 </resources>

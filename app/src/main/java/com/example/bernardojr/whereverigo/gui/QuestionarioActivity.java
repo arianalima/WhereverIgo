@@ -23,12 +23,12 @@ public class QuestionarioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionario);
-        initiViews();
+        initViews();
         btnProx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (progressBar.getProgress() == 100){
-                    Intent it = new Intent(getApplicationContext(),LocaisSugeridosActivity.class);
+                    Intent it = new Intent(getApplicationContext(),HomeActivity.class);
                     startActivity(it);
                 }
                 proximo();
@@ -36,7 +36,7 @@ public class QuestionarioActivity extends AppCompatActivity {
         });
     }
 
-    private void initiViews(){
+    private void initViews(){
         progressBar = (ProgressBar) findViewById(R.id.questionario_progress_bar);
         progressBar.setProgress(0);
         btnProx = (Button) findViewById(R.id.questionario_btn_prox);

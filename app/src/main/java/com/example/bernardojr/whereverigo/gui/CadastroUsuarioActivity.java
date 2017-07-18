@@ -237,7 +237,7 @@ public class CadastroUsuarioActivity extends Activity {
                     pessoa.setSexo(sexoEscolhido);
                     pessoa.setUsuario(usuario);
 
-                    //usuarioNegocio.inserirUsuario(usuario);
+                    usuarioNegocio.inserirUsuario(pessoa);
                     Toast.makeText(getApplication(),"Cadastro realizado!",Toast.LENGTH_SHORT).show();
                     //chamar metodo para retornar a LoginActivity
                     finish();

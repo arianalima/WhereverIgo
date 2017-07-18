@@ -11,8 +11,8 @@
         android:background="@color/cinza">
         <TextView
             android:id="@+id/locais_cidade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:text="TextView"
             android:layout_marginLeft="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -22,8 +22,8 @@
 
         <TextView
             android:id="@+id/locais_estado_pais"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:text="TextView"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/locais_cidade"
@@ -34,7 +34,7 @@
         <ImageView
             android:id="@+id/locais_imagem"
             android:layout_width="0dp"
-            android:layout_height="300dp"
+            android:layout_height="0dp"
             app:srcCompat="@drawable/logomarca"
             android:layout_marginTop="16dp"
             android:scaleType="fitXY"
@@ -45,8 +45,8 @@
 
         <TextView
             android:id="@+id/locais_descricao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:text="TextView"
             android:paddingRight="16dp"
             android:layout_marginTop="16dp"
@@ -56,8 +56,8 @@
 
         <TextView
             android:id="@+id/locais_gostei"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:text="GOSTEI"
             android:textColor="@color/dourado"
             android:layout_marginTop="16dp"
@@ -67,8 +67,8 @@
 
         <TextView
             android:id="@+id/locais_nao_gostei"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginStart="23dp"
             android:text="NÃO GOSTEI"
             android:textColor="@color/dourado"

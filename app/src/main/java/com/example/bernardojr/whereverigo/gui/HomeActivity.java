@@ -1,5 +1,6 @@
 package com.example.bernardojr.whereverigo.gui;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -102,7 +103,7 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-
+            startQuestionarioActivity();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -116,6 +117,12 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void startQuestionarioActivity() {
+        //Intent i = new Intent(HomeActivity.this,QuestionarioActivity.class);
+        Intent i = new Intent(HomeActivity.this,AvaliacaoLocaisActivity.class);//alterar dps
+        startActivity(i);
     }
 
     private class LocaisAdapter extends RecyclerView.Adapter<HomeActivity.LocaisHolder>{

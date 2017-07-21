@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.example.bernardojr.whereverigo.dominio.Usuario;
 import com.example.bernardojr.whereverigo.infra.Criptografia;
 import com.example.bernardojr.whereverigo.R;
-import com.example.bernardojr.whereverigo.infra.WhereverIgoException;
 import com.example.bernardojr.whereverigo.negocio.UsuarioNegocio;
 
 import java.util.regex.Matcher;
@@ -115,9 +114,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         if(regMatcher.matches()) {
             return true;
         }
-            edtEmail.requestFocus();
-            edtEmail.setError(resources.getString(R.string.email_invalido));
-            return false;
+        edtEmail.requestFocus();
+        edtEmail.setError(resources.getString(R.string.email_invalido));
+        return false;
     }
 
 
@@ -145,7 +144,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
                 //usuario = usuarioNegocio.logar(login, senhaCriptografada);
                 //GuiUtil.exibirSaudacao(this);
-                startQuestionarioActivity();
+                startHomeActivity();
 
             }catch (Exception e){
                 //WhereverIgoException
@@ -155,14 +154,15 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             }
         }
     }
-    //metodo chama o cadastro
+
     public void startSignUpActivity() {
         Intent i = new Intent(LoginActivity.this,CadastroUsuarioActivity.class);
         startActivity(i);
     }
 
-    public void startQuestionarioActivity() {
-        startActivity(new Intent(this, QuestionarioActivity.class));
+    public void startHomeActivity() {
+        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+        finish();
     }
 
     public static Context getContexto(){ return contexto; }

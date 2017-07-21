@@ -50,4 +50,7 @@
     <string name="questionario_btn_prox">Próximo</string>
     <string name="questionario_btn_terminar">Terminar</string>
 
+    <!--Tela Avaliação de Locais -->
+    <string name="intro"><u>Avalie as cidades abaixo \n (mesmo que não conheça pessoalmente)</u></string>
+
 </resources>

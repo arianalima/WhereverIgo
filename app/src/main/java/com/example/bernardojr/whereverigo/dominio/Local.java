@@ -7,9 +7,6 @@ import com.example.bernardojr.whereverigo.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Bernardojr on 27/06/2017.
- */
 
 public class Local {
     private String cidade;

@@ -90,7 +90,7 @@ public class UsuarioNegocio {
 
     }
 
-        //** Faz a requisição no banco por email e solicita ao usuarioDAO a inserção do usuário. */
+    //** Faz a requisição no banco por email e solicita ao usuarioDAO a inserção do usuário. */
 //    public void inserirUsuario(Pessoa pessoa) throws WhereverIgoException {
 //        Usuario emailEncontrado = null;
 //
@@ -137,4 +137,32 @@ public class UsuarioNegocio {
         //pessoa = usuarioDao.buscarPessoaId(id);
         return pessoa;
     }
+
+    public void consultarUsuario(String user, String senha){
+
+       /* Call<Usuario> requestCatalog = service.consultarUsuario(user.toString(),senha.toString());
+        requestCatalog.enqueue(new Callback<Usuario>() {
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                if (!response.isSuccessful()){
+                    Log.i("script", "Erro"+ response.code());
+
+                } else {
+                    //Rquisição retornou com sucesso
+                    List<Usuario> usuarioList = (List<Usuario>) response.body();
+
+                    SessaoUsuario sessaoUsuario = SessaoUsuario.getInstancia();
+                    sessaoUsuario.setUsuarioLogado();
+                }
+            }
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                t.printStackTrace();
+                Log.i("script", "Erro"+t.getMessage());
+            }
+        });
+        */
+
+    }
+
 }

@@ -28,7 +28,8 @@ public class QuestionarioActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (progressBar.getProgress() == 100){
-                    Intent it = new Intent(getApplicationContext(),HomeActivity.class);
+                    Intent it = new Intent(getApplicationContext(),AvaliacaoLocaisActivity.class);
+                    //Intent it = new Intent(getApplicationContext(),HomeActivity.class);
                     startActivity(it);
                 }
                 proximo();

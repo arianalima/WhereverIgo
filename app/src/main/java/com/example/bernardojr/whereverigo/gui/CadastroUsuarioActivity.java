@@ -16,11 +16,18 @@ import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Usuario;
 import com.example.bernardojr.whereverigo.dominio.Pessoa;
 import com.example.bernardojr.whereverigo.negocio.UsuarioNegocio;
+import com.example.bernardojr.whereverigo.negocio.UsuarioService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class CadastroUsuarioActivity extends Activity {
 
@@ -35,6 +42,7 @@ public class CadastroUsuarioActivity extends Activity {
     private int year;
     private int month;
     private int day;
+
 
     private String genero;
     private String nome;
@@ -51,6 +59,8 @@ public class CadastroUsuarioActivity extends Activity {
         setContentView(R.layout.activity_cadastro_usuario);
 
         setDataNascimento();
+
+
 
         textNome = (EditText) findViewById(R.id.userNome);
         textEmail = (EditText) findViewById(R.id.userEmail);
@@ -90,7 +100,7 @@ public class CadastroUsuarioActivity extends Activity {
         email = textEmail.getText().toString().trim();
         senha = textSenha.getText().toString().trim();
         repetirSenha = textRepetirSenha.getText().toString().trim();
-        sexoEscolhido = adicionandoGenero();
+        //sexoEscolhido = adicionandoGenero();
         dataNascimentoString = textDataNascimento.getText().toString().trim();
         try {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -103,6 +113,23 @@ public class CadastroUsuarioActivity extends Activity {
                 tamanhoPreenchido(senha,repetirSenha)&&validarEmail(email));
     }
 
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radioButton1:
+                if (checked)
+                    sexoEscolhido = buttonMasculino.getText().toString().trim();
+                    break;
+            case R.id.radioButton2:
+                if (checked)
+                    sexoEscolhido = buttonFeminino.getText().toString().trim();
+                    break;
+        }
+    }
+
     private String adicionandoGenero(){
         final String masculino = buttonMasculino.getText().toString().trim();
         final String feminino = buttonFeminino.getText().toString().trim();
@@ -113,6 +140,9 @@ public class CadastroUsuarioActivity extends Activity {
                         public void onCheckedChanged(RadioGroup group, int checkedId) {
                             boolean buttonMasculino = R.id.radioButton1 == checkedId;
                             boolean buttonFeminino = R.id.radioButton2 == checkedId;
+                            int radioButtonID = radioGroup.getCheckedRadioButtonId();
+                            View radioButton = radioGroup.findViewById(R.id.radioGenero);
+                            int idx = radioGroup.indexOfChild(radioButton);
                             switch (checkedId){
                                 case R.id.radioButton1:
                                     if (buttonMasculino)
@@ -178,7 +208,7 @@ public class CadastroUsuarioActivity extends Activity {
             textDataNascimento.requestFocus();
             textDataNascimento.setError(getString(R.string.campo_data_nascimento));
             return  true;
-        }else if (adicionandoGenero() == null || adicionandoGenero().equalsIgnoreCase("")) {
+        }else if (radioGroup.getCheckedRadioButtonId() == -1  && sexoEscolhido == null) {
             Toast.makeText(getApplication(), "Favor preencha a opção genero", Toast.LENGTH_LONG).show();
             return true;
         }return false;
@@ -234,16 +264,61 @@ public class CadastroUsuarioActivity extends Activity {
                     Pessoa pessoa = new Pessoa();
                     pessoa.setNome(nome);
                     pessoa.setDataNascimento(dataNascimento);
+
                     pessoa.setSexo(sexoEscolhido);
                     pessoa.setUsuario(usuario);
 
+                    SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yyyy" );
+
+                    cadastrarUsuario(email,senha,sexoEscolhido,nome,df.format(dataNascimento));
+
                     //usuarioNegocio.inserirUsuario(pessoa);
-                    Toast.makeText(getApplication(),"Cadastro realizado!",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplication(),"Cadastro realizado!",Toast.LENGTH_SHORT).show();
                     //chamar metodo para retornar a LoginActivity
-                    finish();
+
+
                 }catch (Exception e){
-                    Toast.makeText(getApplication(),"Usuário não cadastrado",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplication(),"Usuário não cadastrado",Toast.LENGTH_LONG).show();
                 }
             }
+    }
+
+    private void cadastrarUsuario(String email, final String senha, String sexo, String nome, String data){
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.25.55:8080/WhereverIgo/rest/UserService/")
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .build();
+
+        UsuarioService service = retrofit.create(UsuarioService.class);
+        Call<String> lista = service.createUser(email,senha,nome,data,sexo);
+
+        lista.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.isSuccessful()){
+
+
+                    //Toast.makeText(getApplication(),"Cadastro realizado!",Toast.LENGTH_SHORT).show();
+                    if (response.body().equals("sucess")){
+                        Toast.makeText(getApplication(),"Cadastro realizado!",Toast.LENGTH_SHORT).show();
+                        finish();
+                    }else {
+                        Toast.makeText(getApplicationContext(),"Email, já cadastrado!",Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }else {
+                    Toast.makeText(getApplication(),"Usuário não cadastrado",Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getApplication(),"Usuário não cadastrado",Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }

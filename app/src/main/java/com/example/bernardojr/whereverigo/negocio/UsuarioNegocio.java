@@ -15,7 +15,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+//import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UsuarioNegocio {
 
@@ -31,7 +31,7 @@ public class UsuarioNegocio {
         return instancia;
     }
 
-    Retrofit retrofit = new Retrofit.Builder()
+   /* Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(UsuarioService.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
@@ -111,7 +111,7 @@ public class UsuarioNegocio {
 //            pessoa.getUsuario().setSenha(senhaCriptografada);
 //            //usuarioDAO.inserirUsuario(usuario);
 //        }
-//    }
+//    }*/
 
     public Usuario logar(String login, String senha) throws WhereverIgoException {
         Usuario usuario = null;

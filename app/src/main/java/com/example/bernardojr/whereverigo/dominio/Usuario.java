@@ -13,6 +13,12 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
+    public Usuario(int id, String email, String senha) {
+        this.id = id;
+        this.email = email;
+        this.senha = senha;
+    }
+
     public Usuario(){
 
     }

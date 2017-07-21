@@ -12,8 +12,8 @@
         android:background="@color/cinza">
         <TextView
             android:id="@+id/local_adapter_cidade"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="TextView"
             android:layout_marginLeft="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -23,8 +23,8 @@
 
         <TextView
             android:id="@+id/local_adapter_estado_pais"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="TextView"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/local_adapter_cidade"
@@ -34,8 +34,8 @@
 
         <ImageView
             android:id="@+id/local_adapter_imagem"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:srcCompat="@drawable/logomarca"
             android:layout_marginTop="16dp"
             android:scaleType="fitXY"
@@ -46,8 +46,8 @@
 
         <TextView
             android:id="@+id/local_adapter_descricao"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="TextView"
             android:paddingRight="16dp"
             android:layout_marginTop="16dp"

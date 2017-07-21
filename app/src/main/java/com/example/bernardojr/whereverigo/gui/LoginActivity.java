@@ -162,7 +162,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     public void startHomeActivity() {
         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-        finish();
     }
 
     public static Context getContexto(){ return contexto; }

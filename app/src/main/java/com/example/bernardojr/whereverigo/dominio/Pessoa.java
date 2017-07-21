@@ -16,6 +16,13 @@ public class Pessoa implements Serializable {
         this.sexo = sexo;
     }
 
+    public Pessoa(String nome, Date dataNascimento,String sexo,Usuario usuario){
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+        this.sexo = sexo;
+        this.usuario = usuario;
+    }
+
     public Pessoa(){
 
     }

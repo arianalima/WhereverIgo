@@ -188,10 +188,12 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     public static Context getContexto(){ return contexto; }
 
     public void getUsuario(String email, final String senha){
-
+        //IPs/endereços
+        //bernardo: http://192.168.25.55:8080/WhereverIgo/rest/UserService/
+        //ari: http://10.246.42.39:8080/UserManagement/rest/UserService/
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.25.55:8080/WhereverIgo/rest/UserService/")
+                .baseUrl("http://10.246.42.39:8080/UserManagement/rest/UserService/")
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
 
@@ -217,16 +219,21 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                             Toast.makeText(getApplicationContext(),"Erro ao carregar usuário." ,Toast.LENGTH_SHORT).show();
                         }
                     }else{
-                        Toast.makeText(getApplicationContext(),"Email e/ou senha incorreto(s)." ,Toast.LENGTH_LONG).show();
+                        edtSenha.requestFocus();
+                        edtSenha.setError(resources.getString(R.string.login_incorreto));
+                        edtEmail.requestFocus();
+                        edtEmail.setError(resources.getString(R.string.login_incorreto));
+
                     }
                 }else {
-                    Toast.makeText(getApplicationContext(),"Erro ao logar, por favor tente novamente." + response.code() ,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),R.string.login_erro + response.code() ,Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Pessoa> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Erro ao conectar ao servidor.",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),R.string.server_erro,Toast.LENGTH_LONG).show();
             }
         });
     }

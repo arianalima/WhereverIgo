@@ -16,6 +16,9 @@
     <string name="email_invalido">E-mail inválido!</string>
     <string name="campo_invalido">Campo Inválido!</string>
     <string name="login_invalido">Login inválido!</string>
+    <string name="login_incorreto">E-mail/Senha incorreto(s)!</string>
+    <string name="login_erro">Erro ao logar. Por favor, tente novamente!</string>
+    <string name="server_erro">Falha na conexão com o servidor!</string>
 
     <!--Tela Cadastro de usuario-->
     <string name="home_text">Cadastre-se para melhor experiência.</string> <!--verificar se a frase está boa!-->
@@ -34,6 +37,10 @@
     <string name="campo_genero">Escolha um genero</string>
     <string name="senha_curta">Sua senha deve ter mais de 4 caracteres!</string>
     <string name="cadastro_senhas_diferentes">Senhas diferentes</string>
+    <string name="cadastro_sucess">Cadastro realizado!</string>
+    <string name="email_duplicado">E-mail já cadastrado!</string>
+    <string name="cadastro_erro">Erro no cadastro</string>
+
     <string name="title_activity_home">HomeActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

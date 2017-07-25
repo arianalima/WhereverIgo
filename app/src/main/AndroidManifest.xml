@@ -22,9 +22,7 @@
 
         <activity android:name=".gui.CadastroUsuarioActivity"></activity>
 
-        <activity
-            android:name=".gui.QuestionarioActivity"
-            android:noHistory="true"></activity>
+        <activity android:name=".gui.QuestionarioActivity"></activity>
 
         <activity
             android:name=".gui.HomeActivity"

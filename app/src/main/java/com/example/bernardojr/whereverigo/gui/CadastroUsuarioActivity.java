@@ -262,9 +262,13 @@ public class CadastroUsuarioActivity extends Activity {
     }
 
     private void cadastrarUsuario(String email,String senha, String sexo, String nome, String data){
+        //IPs/endereços
+        //bernardo: http://192.168.25.55:8080/WhereverIgo/rest/UserService/
+        //ari: http://10.246.42.39:8080/UserManagement/rest/UserService/
+
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.25.55:8080/WhereverIgo/rest/UserService/")
+                .baseUrl("http://10.246.42.39:8080/UserManagement/rest/UserService/")
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
 
@@ -276,22 +280,24 @@ public class CadastroUsuarioActivity extends Activity {
             public void onResponse(Call<String> call, Response<String> response) {
                 if(response.isSuccessful()){
                     if (response.body().equals("success")){
-                        Toast.makeText(getApplication(),"Cadastro realizado!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplication(),R.string.cadastro_sucess,Toast.LENGTH_SHORT).show();
                         finish();
                     }else {
-                        Toast.makeText(getApplicationContext(),"Email, já cadastrado!",Toast.LENGTH_SHORT).show();
+                        textEmail.requestFocus();
+                        textEmail.setError(getResources().getString(R.string.email_duplicado));
+                        //Toast.makeText(getApplicationContext(),R.string.email_duplicado,Toast.LENGTH_SHORT).show();
                     }
 
 
                 }else {
-                    Toast.makeText(getApplication(),"Usuário não cadastrado",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplication(),R.string.cadastro_erro,Toast.LENGTH_LONG).show();
 
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(getApplication(),"Usuário não cadastrado",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplication(),t.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
 

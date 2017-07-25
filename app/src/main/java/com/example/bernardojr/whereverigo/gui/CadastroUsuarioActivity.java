@@ -79,6 +79,29 @@ public class CadastroUsuarioActivity extends Activity {
             }
         });
         chamarBotaoCadastrar();
+
+        radioGroup.setOnCheckedChangeListener(
+                new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        boolean buttonMasculino = R.id.radioButton1 == checkedId;
+                        boolean buttonFeminino = R.id.radioButton2 == checkedId;
+                        int radioButtonID = radioGroup.getCheckedRadioButtonId();
+                        View radioButton = radioGroup.findViewById(R.id.radioGenero);
+                        int idx = radioGroup.indexOfChild(radioButton);
+                        switch (checkedId){
+                            case R.id.radioButton1:
+                                if (buttonMasculino)
+                                    genero = "Masculino";
+                                break;
+                            case R.id.radioButton2:
+                                if(buttonFeminino)
+                                    genero = "Feminino";
+                                break;
+                        }
+                    }
+                });
+
     }
 
     public void chamarBotaoCadastrar(){
@@ -111,51 +134,6 @@ public class CadastroUsuarioActivity extends Activity {
         return (!validaCamposVazios(nome,email,senha,repetirSenha, dataNascimentoString,sexoEscolhido)&&
                 !camposComEspacos(email,senha,repetirSenha, dataNascimentoString, dataNascimento)&&
                 tamanhoPreenchido(senha,repetirSenha)&&validarEmail(email));
-    }
-
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.radioButton1:
-                if (checked)
-                    sexoEscolhido = buttonMasculino.getText().toString().trim();
-                    break;
-            case R.id.radioButton2:
-                if (checked)
-                    sexoEscolhido = buttonFeminino.getText().toString().trim();
-                    break;
-        }
-    }
-
-    private String adicionandoGenero(){
-        final String masculino = buttonMasculino.getText().toString().trim();
-        final String feminino = buttonFeminino.getText().toString().trim();
-
-            radioGroup.setOnCheckedChangeListener(
-                    new RadioGroup.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            boolean buttonMasculino = R.id.radioButton1 == checkedId;
-                            boolean buttonFeminino = R.id.radioButton2 == checkedId;
-                            int radioButtonID = radioGroup.getCheckedRadioButtonId();
-                            View radioButton = radioGroup.findViewById(R.id.radioGenero);
-                            int idx = radioGroup.indexOfChild(radioButton);
-                            switch (checkedId){
-                                case R.id.radioButton1:
-                                    if (buttonMasculino)
-                                        genero = masculino;
-                                    break;
-                                case R.id.radioButton2:
-                                    if(buttonFeminino)
-                                        genero = feminino;
-                                    break;
-                            }
-                        }
-                    });
-        return genero;
     }
 
     private boolean validaCamposVazios(String nome, String email, String senha, String repetirSenha, String dataNascimentoString, String sexoEscolhido){
@@ -208,7 +186,7 @@ public class CadastroUsuarioActivity extends Activity {
             textDataNascimento.requestFocus();
             textDataNascimento.setError(getString(R.string.campo_data_nascimento));
             return  true;
-        }else if (radioGroup.getCheckedRadioButtonId() == -1  && sexoEscolhido == null) {
+        }else if (radioGroup.getCheckedRadioButtonId() == -1  && genero == null) {
             Toast.makeText(getApplication(), "Favor preencha a opção genero", Toast.LENGTH_LONG).show();
             return true;
         }return false;
@@ -265,12 +243,12 @@ public class CadastroUsuarioActivity extends Activity {
                     pessoa.setNome(nome);
                     pessoa.setDataNascimento(dataNascimento);
 
-                    pessoa.setSexo(sexoEscolhido);
+                    pessoa.setSexo(genero);
                     pessoa.setUsuario(usuario);
 
                     SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yyyy" );
-
-                    cadastrarUsuario(email,senha,sexoEscolhido,nome,df.format(dataNascimento));
+                    String dat = df.format(dataNascimento);
+                    cadastrarUsuario(email,senha,genero,nome,dat);
 
                     //usuarioNegocio.inserirUsuario(pessoa);
                     //Toast.makeText(getApplication(),"Cadastro realizado!",Toast.LENGTH_SHORT).show();
@@ -283,7 +261,7 @@ public class CadastroUsuarioActivity extends Activity {
             }
     }
 
-    private void cadastrarUsuario(String email, final String senha, String sexo, String nome, String data){
+    private void cadastrarUsuario(String email,String senha, String sexo, String nome, String data){
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.25.55:8080/WhereverIgo/rest/UserService/")
@@ -297,10 +275,7 @@ public class CadastroUsuarioActivity extends Activity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if(response.isSuccessful()){
-
-
-                    //Toast.makeText(getApplication(),"Cadastro realizado!",Toast.LENGTH_SHORT).show();
-                    if (response.body().equals("sucess")){
+                    if (response.body().equals("success")){
                         Toast.makeText(getApplication(),"Cadastro realizado!",Toast.LENGTH_SHORT).show();
                         finish();
                     }else {

@@ -22,6 +22,8 @@ import com.example.bernardojr.whereverigo.negocio.SessaoUsuario;
 import com.example.bernardojr.whereverigo.negocio.UsuarioNegocio;
 import com.example.bernardojr.whereverigo.negocio.UsuarioService;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,6 +52,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     private SessaoUsuario sessaoUsuario;
 
+    private SimpleDateFormat sdf;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +62,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         criptografia = Criptografia.getInstancia();
         logo = (ImageView) findViewById(R.id.appIcon);
         sessaoUsuario = SessaoUsuario.getInstancia();
+
+        sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         btnLogin = (Button) findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(this);
@@ -201,17 +207,18 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     //ResponseBody rb = response.body();
                     Pessoa pessoa = response.body();
                     if(pessoa != null){
-                        Toast.makeText(getApplicationContext(),"Bem vindo(a)!" ,Toast.LENGTH_SHORT).show();
+                        try {
+                            Date data = sdf.parse(pessoa.getStrDataNascimento());
+                            Toast.makeText(getApplicationContext(),"Bem vindo(a)!" ,Toast.LENGTH_SHORT).show();
+                            sessaoUsuario.setPessoaLogada(pessoa);
+
+                            startHomeActivity();
+                        }catch (Exception e){
+                            Toast.makeText(getApplicationContext(),"Erro ao carregar usuário." ,Toast.LENGTH_SHORT).show();
+                        }
                     }else{
                         Toast.makeText(getApplicationContext(),"Email e/ou senha incorreto(s)." ,Toast.LENGTH_LONG).show();
                     }
-                    sessaoUsuario.setPessoaLogada(pessoa);
-                    if (sessaoUsuario.getPessoaLogada() != null){
-                        startHomeActivity();
-                    }
-
-
-
                 }else {
                     Toast.makeText(getApplicationContext(),"Erro ao logar, por favor tente novamente." + response.code() ,Toast.LENGTH_LONG).show();
                 }
@@ -219,7 +226,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
             @Override
             public void onFailure(Call<Pessoa> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Erro ao conectar à base de dados",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Erro ao conectar ao servidor.",Toast.LENGTH_LONG).show();
             }
         });
     }

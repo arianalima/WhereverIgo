@@ -14,13 +14,24 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.bernardojr.whereverigo.R;
+import com.example.bernardojr.whereverigo.dominio.Pessoa;
 import com.example.bernardojr.whereverigo.dominio.Usuario;
 import com.example.bernardojr.whereverigo.infra.Criptografia;
-import com.example.bernardojr.whereverigo.R;
+import com.example.bernardojr.whereverigo.negocio.SessaoUsuario;
 import com.example.bernardojr.whereverigo.negocio.UsuarioNegocio;
+import com.example.bernardojr.whereverigo.negocio.UsuarioService;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 
 public class LoginActivity extends Activity implements View.OnClickListener{
@@ -39,6 +50,10 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private Criptografia criptografia;
     private String senhaCriptografada;
 
+    private SessaoUsuario sessaoUsuario;
+
+    private SimpleDateFormat sdf;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +61,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         contexto = this;
         criptografia = Criptografia.getInstancia();
         logo = (ImageView) findViewById(R.id.appIcon);
+        sessaoUsuario = SessaoUsuario.getInstancia();
+
+        sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         btnLogin = (Button) findViewById(R.id.btn_login);
         btnLogin.setOnClickListener(this);
@@ -62,8 +80,11 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     @Override
     protected void onResume() {
         super.onResume();
+        sessaoUsuario.setPessoaLogada(null);
         //usuarioNegocio=UsuarioNegocio.getInstancia(this);
     }
+
+
 
     private void initViews() {
         resources = getResources();
@@ -141,10 +162,10 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
                 criptografia.receberSenhaOriginal(senha);
                 senhaCriptografada = criptografia.getSenhaCriptografada();
+                getUsuario(login,senha);
 
                 //usuario = usuarioNegocio.logar(login, senhaCriptografada);
                 //GuiUtil.exibirSaudacao(this);
-                startHomeActivity();
 
             }catch (Exception e){
                 //WhereverIgoException
@@ -165,5 +186,50 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
     public static Context getContexto(){ return contexto; }
+
+    public void getUsuario(String email, final String senha){
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.25.55:8080/WhereverIgo/rest/UserService/")
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .build();
+
+        UsuarioService usuarioService = retrofit.create(UsuarioService.class);
+
+
+        Call<Pessoa> pessoaCall = usuarioService.getUser(email, senha);
+
+        pessoaCall.enqueue(new Callback<Pessoa>() {
+            @Override
+            public void onResponse(Call<Pessoa> call, Response<Pessoa> response) {
+                if(response.isSuccessful()){
+                    //ResponseBody rb = response.body();
+                    Pessoa pessoa = response.body();
+                    if(pessoa != null){
+                        try {
+                            Date data = sdf.parse(pessoa.getStrDataNascimento());
+                            Toast.makeText(getApplicationContext(),"Bem vindo(a)!" ,Toast.LENGTH_SHORT).show();
+                            sessaoUsuario.setPessoaLogada(pessoa);
+
+                            startHomeActivity();
+                        }catch (Exception e){
+                            Toast.makeText(getApplicationContext(),"Erro ao carregar usuário." ,Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(getApplicationContext(),"Email e/ou senha incorreto(s)." ,Toast.LENGTH_LONG).show();
+                    }
+                }else {
+                    Toast.makeText(getApplicationContext(),"Erro ao logar, por favor tente novamente." + response.code() ,Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Pessoa> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"Erro ao conectar ao servidor.",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 
 }

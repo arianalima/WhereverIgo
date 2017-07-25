@@ -1,20 +1,11 @@
 package com.example.bernardojr.whereverigo.negocio;
 
-import android.util.Log;
-
 import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Pessoa;
 import com.example.bernardojr.whereverigo.dominio.Usuario;
 import com.example.bernardojr.whereverigo.gui.LoginActivity;
 import com.example.bernardojr.whereverigo.infra.Criptografia;
 import com.example.bernardojr.whereverigo.infra.WhereverIgoException;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 //import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UsuarioNegocio {
@@ -126,7 +117,6 @@ public class UsuarioNegocio {
         }
 
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstancia();
-        sessaoUsuario.setUsuarioLogado(usuario);
         sessaoUsuario.setPessoaLogada(pesquisarPorId(usuario.getId()));
 
         return usuario;

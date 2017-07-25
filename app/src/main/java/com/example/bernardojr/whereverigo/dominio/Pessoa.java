@@ -16,26 +16,22 @@ public class Pessoa{
     private Usuario usuario;
     @Element(name = "nome")
     private String nome;
-    @Element(name = "dataNascimento")
+    @Element(name = "dataNascimento",required = false)
     private Date dataNascimento;
     @Element(name = "sexo")
     private String sexo;
+    @Element(name = "strDataNascimento")
+    private String strDataNascimento;
 
-    public Pessoa(String nome, Date dataNascimento,String sexo){
-        this.nome = nome;
-        this.dataNascimento = dataNascimento;
-        this.sexo = sexo;
+    public Pessoa() {
     }
 
-    public Pessoa(String nome, Date dataNascimento,String sexo,Usuario usuario){
-        this.nome = nome;
-        this.dataNascimento = dataNascimento;
-        this.sexo = sexo;
+    public Pessoa(int id, Usuario usuario, String nome, String sexo, String strDataNascimento) {
+        this.id = id;
         this.usuario = usuario;
-    }
-
-    public Pessoa(){
-
+        this.nome = nome;
+        this.sexo = sexo;
+        this.strDataNascimento = strDataNascimento;
     }
 
     public int getId() {
@@ -70,11 +66,19 @@ public class Pessoa{
         this.dataNascimento = dataNascimento;
     }
 
-    public String getSexo(String genero) {
+    public String getSexo() {
         return sexo;
     }
 
     public void setSexo(String sexo) {
         this.sexo = sexo;
+    }
+
+    public String getStrDataNascimento() {
+        return strDataNascimento;
+    }
+
+    public void setStrDataNascimento(String strDataNascimento) {
+        this.strDataNascimento = strDataNascimento;
     }
 }

@@ -43,7 +43,7 @@
 
 
     <!--Tela Locais Sugeridos-->
-    <string name="locais_txt_mensagem"><u>Sem ideias? Veja algumas dicas de destino!</u></string>
+    <string name="locais_txt_mensagem">Sem ideias? Veja algumas dicas de destino!</string>
 
     <!--Tela Questionário-->
     <string name="questionario_txt_mensagem">Marque o que mais te indentifica</string>
@@ -51,6 +51,10 @@
     <string name="questionario_btn_terminar">Terminar</string>
 
     <!--Tela Avaliação de Locais -->
-    <string name="intro"><u>Avalie as cidades abaixo \n (mesmo que não conheça pessoalmente)</u></string>
+    <string name="intro">Avalie as cidades abaixo \n (mesmo que não conheça pessoalmente)</string>
 
+    <!--Navigation drawer -->
+    <string name="questionario">Questionário</string>
+
+    <!-- para sublinhar:   <u></u>  -->
 </resources>

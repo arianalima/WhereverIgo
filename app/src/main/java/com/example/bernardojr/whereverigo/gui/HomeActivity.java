@@ -120,8 +120,8 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void startQuestionarioActivity() {
-        //Intent i = new Intent(HomeActivity.this,QuestionarioActivity.class);
-        Intent i = new Intent(HomeActivity.this,AvaliacaoLocaisActivity.class);//alterar dps
+        Intent i = new Intent(HomeActivity.this,QuestionarioActivity.class);
+        //Intent i = new Intent(HomeActivity.this,AvaliacaoLocaisActivity.class);//alterar dps
         startActivity(i);
     }
 

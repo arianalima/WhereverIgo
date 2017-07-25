@@ -79,7 +79,6 @@
             android:background="@android:color/transparent"
             android:elegantTextHeight="false"
             android:focusable="false"
-            android:layout_marginTop="90dp"
             android:layout_gravity="center"
             android:onClick="cadastrar"/>
 

@@ -192,10 +192,10 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     public void getUsuario(String email, final String senha){
         //IPs/endereços
         //bernardo: http://192.168.25.55:8080/WhereverIgo/rest/UserService/
-        //ari: http://10.246.42.39:8080/UserManagement/rest/UserService/
+        //ari: http://10.246.42.39:8080/UserManagement/rest/UserService/ ou 192.168.25.234
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.246.42.39:8080/UserManagement/rest/UserService/")
+                .baseUrl("http://192.168.25.234:8080/UserManagement/rest/UserService/")
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
 
@@ -234,8 +234,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
             @Override
             public void onFailure(Call<Pessoa> call, Throwable t) {
-                //Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),R.string.server_erro,Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),R.string.server_erro,Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -24,7 +24,7 @@ public class Pessoa{
     private String sexo;
     @Element(name = "strDataNascimento")
     private String strDataNascimento;
-
+/*
     @Element(name = "tags")
     private List<Tag> tags;
 
@@ -33,7 +33,7 @@ public class Pessoa{
 
     @Element(name = "recomendacoes")
     private List<Local> locaisRecomendados;
-
+*/
 
 
     public Pessoa() {

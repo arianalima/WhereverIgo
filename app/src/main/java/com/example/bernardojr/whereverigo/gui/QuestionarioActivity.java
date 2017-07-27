@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.bernardojr.whereverigo.R;
 
 import static android.R.attr.checked;
+import static android.R.attr.windowElevation;
 
 public class QuestionarioActivity extends AppCompatActivity {
 
@@ -30,8 +31,9 @@ public class QuestionarioActivity extends AppCompatActivity {
     private int QUESTINARIO_PROGRESSO = 20;
 
     GridView gridView;
-    String tagsList[] = {"praia", "frio", "romântico", "radical", "gastronômico", "família", "pacato", "histórico", "religioso"};
-    int imagensList[] = {R.drawable.recife,R.drawable.recife,R.drawable.recife,R.drawable.recife, R.drawable.recife,R.drawable.recife,R.drawable.recife,R.drawable.recife, R.drawable.recife};
+    String tagsList[] = {"praia", "frio", "romance", "radical", "família", "culinária", "sossego", "história", "religião"};
+    int imagensList[] = {R.mipmap.praia,R.mipmap.frio,R.mipmap.romantico,R.mipmap.esporte_radical, R.mipmap.familia,
+            R.mipmap.gastronomia,R.mipmap.tranquilo,R.mipmap.historico, R.mipmap.religioso};
 
     int checked = 0;
     int selectedPosition = -1;
@@ -141,7 +143,9 @@ public class QuestionarioActivity extends AppCompatActivity {
             }
 
             ImageView imagem = (ImageView) gridView.findViewById(R.id.tagImagem);
+            imagem.setScaleType(ImageView.ScaleType.FIT_XY);
             TextView tag = (TextView) gridView.findViewById(R.id.tagNome);
+
 
             imagem.setImageResource(imagens[position]);
             tag.setText(tags[position]);

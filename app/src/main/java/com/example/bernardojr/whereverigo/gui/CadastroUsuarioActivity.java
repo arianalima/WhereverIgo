@@ -264,11 +264,11 @@ public class CadastroUsuarioActivity extends Activity {
     private void cadastrarUsuario(String email,String senha, String sexo, String nome, String data){
         //IPs/endereços
         //bernardo: http://192.168.25.55:8080/WhereverIgo/rest/UserService/
-        //ari: http://10.246.42.39:8080/UserManagement/rest/UserService/
+        //ari: http://10.246.42.39:8080/UserManagement/rest/UserService/ ou 192.168.25.234
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.246.42.39:8080/UserManagement/rest/UserService/")
+                .baseUrl("http://192.168.25.234:8080/UserManagement/rest/UserService/")
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
 

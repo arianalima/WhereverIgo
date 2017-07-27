@@ -3,8 +3,6 @@ package com.example.bernardojr.whereverigo.gui;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,11 +18,20 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Local;
+import com.example.bernardojr.whereverigo.negocio.LocalService;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,19 +45,17 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        getLocais();
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Local l = new Local();
-        locais = l.listarLocais();
-        recyclerView = (RecyclerView) findViewById(R.id.locais_recycler_view);
+
+
         banner = (ImageView) findViewById(R.id.locais_banner);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.setHasFixedSize(true);
-        adapter = new HomeActivity.LocaisAdapter(locais);
-        recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new HomeActivity.SpacesItemDecoration(24));
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -58,8 +63,11 @@ public class HomeActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -200,4 +208,46 @@ public class HomeActivity extends AppCompatActivity
 
         }
     }
+
+    public void getLocais(){
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.25.55:8080/WhereverIgo/rest/LocalService/")
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .build();
+
+        LocalService usuarioService = retrofit.create(LocalService.class);
+
+
+        Call<Local> locaisCall = usuarioService.getLocais();
+
+        locaisCall.enqueue(new Callback<Local>() {
+            @Override
+            public void onResponse(Call<Local> call, Response<Local> response) {
+                if(response.isSuccessful()){
+                    recyclerView = (RecyclerView) findViewById(R.id.locais_recycler_view);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    recyclerView.setHasFixedSize(true);
+                    locais = new ArrayList<Local>();
+                    Local loca = response.body();
+                    int id = getBaseContext().getResources().getIdentifier(loca.getStrImagem(), "drawable", getBaseContext().getPackageName());
+                    loca.setImagem(id);
+                    adapter = new HomeActivity.LocaisAdapter(locais);
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.addItemDecoration(new HomeActivity.SpacesItemDecoration(24));
+
+
+                }else {
+                    Toast.makeText(getApplicationContext(), response.code() ,Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Local> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
 }

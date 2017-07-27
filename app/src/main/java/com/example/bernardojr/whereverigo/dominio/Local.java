@@ -4,15 +4,33 @@ import android.widget.ImageView;
 
 import com.example.bernardojr.whereverigo.R;
 
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
+
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Root(name = "local")
 public class Local {
+    @Element(name = "id")
+    private int id;
+    @Element(name = "cidade")
     private String cidade;
+    @Element(name = "estadoPais")
     private String estadoPais;
-    private int imagem;
+    @Element(name = "descricao")
     private String descricao;
+    @Element(name = "strImagem")
+    private String strImagem;
+    private int imagem;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getCidade() {
         return cidade;
@@ -30,14 +48,6 @@ public class Local {
         this.estadoPais = estadoPais;
     }
 
-    public int getImagem() {
-        return imagem;
-    }
-
-    public void setImagem(int imagem) {
-        this.imagem = imagem;
-    }
-
     public String getDescricao() {
         return descricao;
     }
@@ -46,29 +56,33 @@ public class Local {
         this.descricao = descricao;
     }
 
+    public String getStrImagem() {
+        return strImagem;
+    }
+
+    public void setStrImagem(String str) {
+        this.strImagem = str;
+    }
+
+    public int getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(int imagem) {
+        this.imagem = imagem;
+    }
+
     public Local() {
     }
 
-    public Local(String cidade, String estadoPais, int imagem, String descricao) {
-
+    public Local(int id, String cidade, String estadoPais, String strImagem, String descricao) {
+        this.id = id;
         this.cidade = cidade;
         this.estadoPais = estadoPais;
-        this.imagem = imagem;
         this.descricao = descricao;
+        this.strImagem = strImagem;
     }
 
-    public List<Local> listarLocais(){
-        ArrayList<Local> locais = new ArrayList<>();
 
-        Local recife = new Local("Recife", "Pernambuco - Brasil", R.drawable.recife,
-                "Recife é um município brasileiro, capital do estado de Pernambuco, localizado na Região Nordeste do país. Pertence à Mesorregião Metropolitana do Recife e à Microrregião do Recife.");
-        locais.add(recife);
 
-        //trocar img pra olinda
-        Local olinda = new Local("Olinda", "Pernambuco - Brasil", R.drawable.recife,
-                "Olinda é um município brasileiro do estado de Pernambuco, situado na mesorregião Metropolitana do Recife e na Microrregião do Recife, Região Nordeste do país.");
-        locais.add(olinda);
-
-        return locais;
-    }
 }

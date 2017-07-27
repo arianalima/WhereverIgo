@@ -81,6 +81,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     protected void onResume() {
         super.onResume();
         sessaoUsuario.setPessoaLogada(null);
+        edtSenha.setText(null);
+        edtEmail.setText(null);
         //usuarioNegocio=UsuarioNegocio.getInstancia(this);
     }
 

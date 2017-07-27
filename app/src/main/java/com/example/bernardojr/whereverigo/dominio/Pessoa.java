@@ -5,6 +5,8 @@ import org.simpleframework.xml.Root;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 @Root(name = "pessoa")
 public class Pessoa{
 
@@ -22,6 +24,17 @@ public class Pessoa{
     private String sexo;
     @Element(name = "strDataNascimento")
     private String strDataNascimento;
+
+    @Element(name = "tags")
+    private List<Tag> tags;
+
+    @Element(name = "avaliacoes")
+    private List<Avaliacao> avaliacoes;
+
+    @Element(name = "recomendacoes")
+    private List<Local> locaisRecomendados;
+
+
 
     public Pessoa() {
     }

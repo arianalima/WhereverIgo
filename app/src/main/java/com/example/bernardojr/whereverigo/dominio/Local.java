@@ -64,7 +64,8 @@ public class Local {
                 "Recife é um município brasileiro, capital do estado de Pernambuco, localizado na Região Nordeste do país. Pertence à Mesorregião Metropolitana do Recife e à Microrregião do Recife.");
         locais.add(recife);
 
-        Local olinda = new Local("Olinda", "Pernambuco - Brasil", R.drawable.olinda,
+        //trocar img pra olinda
+        Local olinda = new Local("Olinda", "Pernambuco - Brasil", R.drawable.recife,
                 "Olinda é um município brasileiro do estado de Pernambuco, situado na mesorregião Metropolitana do Recife e na Microrregião do Recife, Região Nordeste do país.");
         locais.add(olinda);
 

@@ -30,8 +30,8 @@ public class QuestionarioActivity extends AppCompatActivity {
     private int QUESTINARIO_PROGRESSO = 20;
 
     GridView gridView;
-    String tagsList[] = {"praia", "frio", "romântico", "radical"};
-    int imagensList[] = {R.drawable.recife,R.drawable.olinda,R.drawable.recife,R.drawable.olinda};
+    String tagsList[] = {"praia", "frio", "romântico", "radical", "gastronômico", "família", "pacato", "histórico", "religioso"};
+    int imagensList[] = {R.drawable.recife,R.drawable.recife,R.drawable.recife,R.drawable.recife, R.drawable.recife,R.drawable.recife,R.drawable.recife,R.drawable.recife, R.drawable.recife};
 
     int checked = 0;
     int selectedPosition = -1;

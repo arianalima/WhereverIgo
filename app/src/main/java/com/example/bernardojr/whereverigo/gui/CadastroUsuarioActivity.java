@@ -268,7 +268,7 @@ public class CadastroUsuarioActivity extends Activity {
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.25.234:8080/UserManagement/rest/UserService/")
+                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/UsuarioService/")
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
 

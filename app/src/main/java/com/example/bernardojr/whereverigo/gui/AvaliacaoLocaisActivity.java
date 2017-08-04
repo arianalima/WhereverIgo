@@ -37,12 +37,12 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
 
         Local l = new Local();
-        locais = l.listarLocais();
+        //locais = l.listarLocais();
         recyclerView = (RecyclerView) findViewById(R.id.avaliacao_locais_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        adapter = new AvaliacaoLocaisActivity.LocalAdapter(locais);
-        recyclerView.setAdapter(adapter);
+        //adapter = new AvaliacaoLocaisActivity.LocalAdapter(locais);
+        recyclerView.setAdapter(null);
         recyclerView.addItemDecoration(new AvaliacaoLocaisActivity.SpacesItemDecoration(24));
         recyclerView.setHasFixedSize(true);
 

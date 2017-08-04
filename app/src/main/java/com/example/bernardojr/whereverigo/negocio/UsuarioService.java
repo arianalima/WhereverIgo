@@ -13,7 +13,7 @@ import retrofit2.http.POST;
 public interface UsuarioService {
 
     @FormUrlEncoded
-    @POST("users")
+    @POST("createuser")
     Call<String> createUser(
             @Field("email") String email,
             @Field("senha") String senha,

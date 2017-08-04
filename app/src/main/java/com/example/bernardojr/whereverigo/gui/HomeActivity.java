@@ -1,5 +1,6 @@
 package com.example.bernardojr.whereverigo.gui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -41,11 +42,19 @@ public class HomeActivity extends AppCompatActivity
     private HomeActivity.LocaisAdapter adapter;
     private List<Local> locais;
 
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        getLocais();
+        context = getApplicationContext();
+        recyclerView = (RecyclerView) findViewById(R.id.locais_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(null);
+        recyclerView.addItemDecoration(new HomeActivity.SpacesItemDecoration(24));
+
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -67,6 +76,7 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        getLocais(context);
 
     }
 
@@ -209,10 +219,10 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
-    public void getLocais(){
+    public void requesLocais(final Context context){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.25.55:8080/WhereverIgo/rest/LocalService/")
+                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/LocalService/")
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
 
@@ -225,29 +235,33 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<Local> call, Response<Local> response) {
                 if(response.isSuccessful()){
-                    recyclerView = (RecyclerView) findViewById(R.id.locais_recycler_view);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    recyclerView.setHasFixedSize(true);
-                    locais = new ArrayList<Local>();
-                    Local loca = response.body();
-                    int id = getBaseContext().getResources().getIdentifier(loca.getStrImagem(), "drawable", getBaseContext().getPackageName());
-                    loca.setImagem(id);
-                    adapter = new HomeActivity.LocaisAdapter(locais);
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.addItemDecoration(new HomeActivity.SpacesItemDecoration(24));
+
+                    locais = new ArrayList<>();
+                    Local local = response.body();
+                    int id = context.getResources().getIdentifier(local.getStrImagem(), "drawable", context.getPackageName());
+                    local.setImagem(id);
+                    locais.add(local);
+
+
+
 
 
                 }else {
-                    Toast.makeText(getApplicationContext(), response.code() ,Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, response.code() ,Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Local> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(context,t.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
     }
 
+    public void getLocais(Context context){
+        requesLocais(context);
+        adapter = new HomeActivity.LocaisAdapter(locais);
+        recyclerView.setAdapter(adapter);
+    }
 
 }

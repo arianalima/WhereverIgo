@@ -40,7 +40,7 @@ public class HomeActivity extends AppCompatActivity
     private RecyclerView recyclerView;
     private ImageView banner;
     private HomeActivity.LocaisAdapter adapter;
-    private List<Local> locais;
+    private List<Local> locais = new ArrayList<>();
 
     private Context context;
 
@@ -222,7 +222,7 @@ public class HomeActivity extends AppCompatActivity
     public void requesLocais(final Context context){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/LocalService/")
+                .baseUrl("http://10.246.13.221:8080/WhereverIGo/rest/LocalService/")
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
 
@@ -241,6 +241,8 @@ public class HomeActivity extends AppCompatActivity
                     int id = context.getResources().getIdentifier(local.getStrImagem(), "drawable", context.getPackageName());
                     local.setImagem(id);
                     locais.add(local);
+                    adapter = new HomeActivity.LocaisAdapter(locais);
+                    recyclerView.setAdapter(adapter);
 
 
 
@@ -260,8 +262,10 @@ public class HomeActivity extends AppCompatActivity
 
     public void getLocais(Context context){
         requesLocais(context);
-        adapter = new HomeActivity.LocaisAdapter(locais);
-        recyclerView.setAdapter(adapter);
+        if (locais.size() != 0){
+
+        }
+
     }
 
 }

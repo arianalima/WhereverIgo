@@ -43,7 +43,6 @@ public class CadastroUsuarioActivity extends Activity {
     private int month;
     private int day;
 
-
     private String genero;
     private String nome;
     private String email;
@@ -265,10 +264,10 @@ public class CadastroUsuarioActivity extends Activity {
         //IPs/endereços
         //bernardo: http://192.168.25.55:8080/WhereverIgo/rest/UserService/
         //ari: http://10.246.42.39:8080/UserManagement/rest/UserService/ ou 192.168.25.234
-
+        //leut: http://10.246.13.221:8080/WhereverIGo/rest/UsuarioService/ ou 192.168.31.191
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/UsuarioService/")
+                .baseUrl("http://10.246.13.221:8080/WhereverIGo/rest/UsuarioService/")
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
 

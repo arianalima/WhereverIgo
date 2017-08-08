@@ -4,23 +4,15 @@ import android.widget.ImageView;
 
 import com.example.bernardojr.whereverigo.R;
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Root(name = "local")
 public class Local {
-    @Element(name = "id")
     private int id;
-    @Element(name = "cidade")
     private String cidade;
-    @Element(name = "estadoPais")
     private String estadoPais;
-    @Element(name = "descricao")
     private String descricao;
-    @Element(name = "strImagem")
     private String strImagem;
     private int imagem;
 

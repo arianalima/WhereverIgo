@@ -31,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class LoginActivity extends Activity implements View.OnClickListener{
@@ -196,8 +196,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         //leut: http://10.246.13.221:8080/WhereverIGo/rest/UsuarioService/ ou 192.168.31.191
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.246.13.221:8080/WhereverIGo/rest/UsuarioService/")
-                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/UsuarioService/")
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         UsuarioService usuarioService = retrofit.create(UsuarioService.class);

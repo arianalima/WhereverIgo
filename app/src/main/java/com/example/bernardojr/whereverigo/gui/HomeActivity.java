@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Local;
+import com.example.bernardojr.whereverigo.infra.ImagemRetangular;
 import com.example.bernardojr.whereverigo.negocio.LocalService;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -76,7 +77,7 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        getLocais(context);
+        requesLocais(context);
 
     }
 
@@ -187,17 +188,13 @@ public class HomeActivity extends AppCompatActivity
         private TextView estadoPais;
         private ImageView imagem;
         private TextView descricao;
-        private TextView gostei;
-        private TextView naoGostei;
 
         public LocaisHolder(View itemView) {
             super(itemView);
             cidade = (TextView) itemView.findViewById(R.id.locais_cidade);
             estadoPais = (TextView) itemView.findViewById(R.id.locais_estado_pais);
-            imagem = (ImageView) itemView.findViewById(R.id.locais_imagem);
+            imagem = (ImagemRetangular) itemView.findViewById(R.id.locais_imagem);
             descricao = (TextView) itemView.findViewById(R.id.locais_descricao);
-            gostei = (TextView) itemView.findViewById(R.id.locais_gostei);
-            naoGostei = (TextView) itemView.findViewById(R.id.locais_nao_gostei);
         }
     }
 
@@ -222,26 +219,30 @@ public class HomeActivity extends AppCompatActivity
     public void requesLocais(final Context context){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.246.13.221:8080/WhereverIGo/rest/LocalService/")
-                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/LocalService/")
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         LocalService usuarioService = retrofit.create(LocalService.class);
 
 
-        Call<Local> locaisCall = usuarioService.getLocais();
+        Call<ArrayList<Local>> locaisCall = usuarioService.getLocais();
 
-        locaisCall.enqueue(new Callback<Local>() {
+        locaisCall.enqueue(new Callback<ArrayList<Local>>() {
             @Override
-            public void onResponse(Call<Local> call, Response<Local> response) {
+            public void onResponse(Call<ArrayList<Local>> call, Response<ArrayList<Local>> response) {
                 if(response.isSuccessful()){
 
-                    locais = new ArrayList<>();
-                    Local local = response.body();
-                    int id = context.getResources().getIdentifier(local.getStrImagem(), "drawable", context.getPackageName());
-                    local.setImagem(id);
-                    locais.add(local);
-                    adapter = new HomeActivity.LocaisAdapter(locais);
+                    Local local;
+                    ArrayList<Local> novosLocais = response.body();
+                    for(int i = 0; i < novosLocais.size(); i++){
+                        local = novosLocais.get(i);
+                        int id = context.getResources().getIdentifier(local.getStrImagem(), "drawable", context.getPackageName());
+                        local.setImagem(id);
+                    }
+
+
+                    adapter = new HomeActivity.LocaisAdapter(novosLocais);
                     recyclerView.setAdapter(adapter);
 
 
@@ -254,18 +255,12 @@ public class HomeActivity extends AppCompatActivity
             }
 
             @Override
-            public void onFailure(Call<Local> call, Throwable t) {
+            public void onFailure(Call<ArrayList<Local>> call, Throwable t) {
                 Toast.makeText(context,t.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    public void getLocais(Context context){
-        requesLocais(context);
-        if (locais.size() != 0){
 
-        }
-
-    }
 
 }

@@ -1,5 +1,6 @@
 package com.example.bernardojr.whereverigo.gui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +18,16 @@ import android.widget.Toast;
 
 import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Local;
+import com.example.bernardojr.whereverigo.negocio.LocalService;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AvaliacaoLocaisActivity extends AppCompatActivity {
 
@@ -145,5 +154,50 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
             outRect.left = space;
 
         }
+    }
+
+    public void requesLocais(final Context context){
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/LocalService/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        LocalService usuarioService = retrofit.create(LocalService.class);
+
+
+        Call<ArrayList<Local>> locaisCall = usuarioService.getLocais();
+
+        locaisCall.enqueue(new Callback<ArrayList<Local>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Local>> call, Response<ArrayList<Local>> response) {
+                if(response.isSuccessful()){
+
+                    Local local;
+                    ArrayList<Local> novosLocais = response.body();
+                    for(int i = 0; i < novosLocais.size(); i++){
+                        local = novosLocais.get(i);
+                        int id = context.getResources().getIdentifier(local.getStrImagem(), "drawable", context.getPackageName());
+                        local.setImagem(id);
+                    }
+
+
+                    adapter = new LocalAdapter(novosLocais);
+                    recyclerView.setAdapter(adapter);
+
+
+
+
+
+                }else {
+                    Toast.makeText(context, response.code() ,Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Local>> call, Throwable t) {
+                Toast.makeText(context,t.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

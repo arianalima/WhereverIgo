@@ -1,28 +1,19 @@
 package com.example.bernardojr.whereverigo.dominio;
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Root(name = "pessoa")
 public class Pessoa{
 
     // link do tutorial : https://futurestud.io/tutorials/retrofit-how-to-integrate-xml-converter
 
-    @Element(name = "id")
     private int id;
-    @Element(name = "usuario")
     private Usuario usuario;
-    @Element(name = "nome")
     private String nome;
-    @Element(name = "dataNascimento",required = false)
     private Date dataNascimento;
-    @Element(name = "sexo")
     private String sexo;
-    @Element(name = "strDataNascimento")
     private String strDataNascimento;
 /*
     @Element(name = "tags")

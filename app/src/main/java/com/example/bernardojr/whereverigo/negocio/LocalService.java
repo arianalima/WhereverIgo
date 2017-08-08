@@ -20,5 +20,5 @@ import retrofit2.http.Path;
 public interface LocalService {
 
     @POST("locais")
-    Call<Local> getLocais();
+    Call<ArrayList<Local>> getLocais();
 }

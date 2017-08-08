@@ -1,16 +1,10 @@
 package com.example.bernardojr.whereverigo.dominio;
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
 
-@Root(name = "usuario")
 public class Usuario{
 
-    @Element(name = "id")
     private int id;
-    @Element(name = "email")
     private String email;
-    @Element(name = "senha")
     private String senha;
 
     public Usuario(String email, String senha) {

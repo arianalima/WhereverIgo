@@ -17,6 +17,8 @@ import com.example.bernardojr.whereverigo.dominio.Usuario;
 import com.example.bernardojr.whereverigo.dominio.Pessoa;
 import com.example.bernardojr.whereverigo.negocio.UsuarioNegocio;
 import com.example.bernardojr.whereverigo.negocio.UsuarioService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CadastroUsuarioActivity extends Activity {
 
@@ -260,6 +262,14 @@ public class CadastroUsuarioActivity extends Activity {
             }
     }
 
+    Gson gson = new GsonBuilder()
+            .enableComplexMapKeySerialization()
+            .serializeNulls()
+            .setPrettyPrinting()
+            .setVersion(1.0)
+            .setLenient()
+            .create();
+
     private void cadastrarUsuario(String email,String senha, String sexo, String nome, String data){
         //IPs/endereços
         //bernardo: http://192.168.25.55:8080/WhereverIgo/rest/UserService/
@@ -267,8 +277,8 @@ public class CadastroUsuarioActivity extends Activity {
         //leut: http://10.246.13.221:8080/WhereverIGo/rest/UsuarioService/ ou 192.168.31.191
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.246.13.221:8080/WhereverIGo/rest/UsuarioService/")
-                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/UsuarioService/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         UsuarioService service = retrofit.create(UsuarioService.class);

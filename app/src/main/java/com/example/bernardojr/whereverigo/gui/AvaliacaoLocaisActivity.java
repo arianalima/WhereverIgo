@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Local;
+import com.example.bernardojr.whereverigo.infra.ImagemRetangular;
 import com.example.bernardojr.whereverigo.negocio.LocalService;
 
 import java.util.ArrayList;
@@ -34,8 +35,13 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private AvaliacaoLocaisActivity.LocalAdapter adapter;
     private List<Local> locais;
+    private static List<Float> notas;
 
     private Button btnSubmit;
+
+    public static List<Float> getNotas(){
+        return notas;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +61,18 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new AvaliacaoLocaisActivity.SpacesItemDecoration(24));
         recyclerView.setHasFixedSize(true);
 
+        requesLocais(getApplicationContext());
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(),HomeActivity.class);
-                startActivity(i);
+//                Intent i = new Intent(getApplicationContext(),HomeActivity.class);
+//                startActivity(i);
+                if (locais != null){
+
+                }
+
                 //Toast.makeText(AvaliacaoLocaisActivity.this,String.valueOf(LocalHolder.ratingBar.getRating()),Toast.LENGTH_SHORT).show();
 
             }
@@ -71,7 +83,6 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
     private class LocalAdapter extends RecyclerView.Adapter<AvaliacaoLocaisActivity.LocalHolder>{
 
         private List<Local> locais;
-        private List<Float> notas;
 
         private LocalAdapter(List<Local> locais) {
             this.locais = locais;
@@ -92,7 +103,7 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(final AvaliacaoLocaisActivity.LocalHolder holder, int position) {
+        public void onBindViewHolder(final AvaliacaoLocaisActivity.LocalHolder holder, final int position) {
             holder.cidade.setText(locais.get(position).getCidade());
             holder.estadoPais.setText(locais.get(position).getEstadoPais());
             holder.imagem.setImageResource(locais.get(position).getImagem());
@@ -104,6 +115,8 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
                                             boolean fromUser) {
 
                     holder.txtRatingValue.setText(String.valueOf(rating));
+                    notas.set(position,rating);
+                    Toast.makeText(getApplicationContext(),""+rating,Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -113,6 +126,7 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
         public int getItemCount() {
             return locais.size();
         }
+
     }
 
     private class LocalHolder extends RecyclerView.ViewHolder {
@@ -130,7 +144,7 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
             super(itemView);
             cidade = (TextView) itemView.findViewById(R.id.local_adapter_cidade);
             estadoPais = (TextView) itemView.findViewById(R.id.local_adapter_estado_pais);
-            imagem = (ImageView) itemView.findViewById(R.id.local_adapter_imagem);
+            imagem = (ImagemRetangular) itemView.findViewById(R.id.local_adapter_imagem);
             descricao = (TextView) itemView.findViewById(R.id.local_adapter_descricao);
             ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
             txtRatingValue = (TextView) itemView.findViewById(R.id.txtRatingValue);
@@ -173,6 +187,8 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
             public void onResponse(Call<ArrayList<Local>> call, Response<ArrayList<Local>> response) {
                 if(response.isSuccessful()){
 
+                    locais = new ArrayList<>();
+                    notas = new ArrayList<>();
                     Local local;
                     ArrayList<Local> novosLocais = response.body();
                     for(int i = 0; i < novosLocais.size(); i++){
@@ -180,9 +196,13 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
                         int id = context.getResources().getIdentifier(local.getStrImagem(), "drawable", context.getPackageName());
                         local.setImagem(id);
                     }
+                    for (int i = 0; i < 3;i++){
+                        locais.add(novosLocais.get(i));
+                        notas.add(0f);
+                    }
 
 
-                    adapter = new LocalAdapter(novosLocais);
+                    adapter = new LocalAdapter(locais);
                     recyclerView.setAdapter(adapter);
 
 

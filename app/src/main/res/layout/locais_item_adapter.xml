@@ -33,7 +33,7 @@
 
         <com.example.bernardojr.whereverigo.infra.ImagemRetangular
             android:id="@+id/locais_imagem"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/logomarca"
             android:layout_marginTop="16dp"

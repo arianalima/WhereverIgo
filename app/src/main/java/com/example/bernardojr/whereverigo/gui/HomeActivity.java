@@ -36,6 +36,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import com.appodeal.ads.Appodeal;
+import com.appodeal.ads.InterstitialCallbacks;
+
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -43,6 +46,7 @@ public class HomeActivity extends AppCompatActivity
     private ImageView banner;
     private HomeActivity.LocaisAdapter adapter;
     private List<Local> locais = new ArrayList<>();
+    private final String appKey = "30b007486c65d1794e143bbcd4189a5f30d27ab806598290";
 
     private Context context;
 
@@ -57,24 +61,22 @@ public class HomeActivity extends AppCompatActivity
         recyclerView.setAdapter(null);
         recyclerView.addItemDecoration(new HomeActivity.SpacesItemDecoration(24));
 
-
+        //Appodeal
+        //Appodeal.show(this, Appodeal.INTERSTITIAL)
+        Appodeal.initialize(this, appKey, Appodeal.INTERSTITIAL | Appodeal.BANNER | Appodeal.MREC);
+        Appodeal.setTesting(true);
+        Appodeal.show(this, Appodeal.BANNER_BOTTOM);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
-        banner = (ImageView) findViewById(R.id.locais_banner);
-
-
+        //banner = (ImageView) findViewById(R.id.locais_banner);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
-
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -83,14 +85,56 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Appodeal.onResume(this, Appodeal.BANNER);
+    }
+
+    private boolean gettingOut = false;
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            if (gettingOut) {
+                super.onBackPressed();
+                finish();
+            }else{
+                gettingOut = true;
+                Appodeal.show(this, Appodeal.INTERSTITIAL);
+
+                Appodeal.setInterstitialCallbacks(new InterstitialCallbacks() {
+                    @Override
+                    public void onInterstitialLoaded(boolean b) {
+
+                    }
+
+                    @Override
+                    public void onInterstitialFailedToLoad() {
+
+                    }
+
+                    @Override
+                    public void onInterstitialShown() {
+
+                    }
+
+                    @Override
+                    public void onInterstitialClicked() {
+
+                    }
+
+                    @Override
+                    public void onInterstitialClosed() {
+                        onBackPressed();
+                    }
+                });
+            }
             super.onBackPressed();
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -213,7 +257,7 @@ public class HomeActivity extends AppCompatActivity
     public void requesLocais(final Context context){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/LocalService/")
+                .baseUrl("http://10.246.13.221:8080/WhereverIGo/rest/LocalService/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

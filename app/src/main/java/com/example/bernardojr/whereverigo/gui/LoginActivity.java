@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.appodeal.ads.Appodeal;
 import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Pessoa;
 import com.example.bernardojr.whereverigo.dominio.Usuario;
@@ -73,7 +74,11 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         edtEmail = (EditText) findViewById(R.id.userEmail);
         edtSenha = (EditText) findViewById(R.id.userSenha);
 
+        Appodeal.show(this, Appodeal.BANNER_BOTTOM);
+
         initViews();
+
+
 
     }
 
@@ -196,7 +201,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         //leut: http://10.246.13.221:8080/WhereverIGo/rest/UsuarioService/ ou 192.168.31.191
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/UsuarioService/")
+                .baseUrl("http://10.246.13.221:8080/WhereverIGo/rest/UsuarioService/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

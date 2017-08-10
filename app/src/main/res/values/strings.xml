@@ -59,6 +59,8 @@
 
     <!--Tela Avaliação de Locais -->
     <string name="intro">Avalie as cidades abaixo \n (mesmo que não conheça pessoalmente)</string>
+    <string name="erro_conexao">Erro na conexão</string>
+    <string name="erro_failure_metodo">Desculpe, algum erro inesperado aconteceu, tente reiniciar a aplicação</string>
 
     <!--Navigation drawer -->
     <string name="questionario">Questionário</string>

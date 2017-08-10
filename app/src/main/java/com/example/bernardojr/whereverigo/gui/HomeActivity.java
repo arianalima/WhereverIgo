@@ -25,6 +25,7 @@ import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Local;
 import com.example.bernardojr.whereverigo.infra.ImagemRetangular;
 import com.example.bernardojr.whereverigo.negocio.LocalService;
+import com.example.bernardojr.whereverigo.negocio.SessaoUsuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -225,8 +226,8 @@ public class HomeActivity extends AppCompatActivity
 
         LocalService usuarioService = retrofit.create(LocalService.class);
 
-
-        Call<ArrayList<Local>> locaisCall = usuarioService.getLocais();
+        int id = SessaoUsuario.getInstancia().getPessoaLogada().getId();
+        Call<ArrayList<Local>> locaisCall = usuarioService.getUltimaPesquisa(id);
 
         locaisCall.enqueue(new Callback<ArrayList<Local>>() {
             @Override

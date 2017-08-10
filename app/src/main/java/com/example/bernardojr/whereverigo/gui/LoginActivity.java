@@ -214,12 +214,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                     if(pessoa != null){
                         try {
                             Date data = sdf.parse(pessoa.getStrDataNascimento());
-                            Toast.makeText(getApplicationContext(),"Bem vindo(a)!" ,Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getApplicationContext(),"Nome: "+pessoa.getNome() ,Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getApplicationContext(),"ID: "+pessoa.getId() ,Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getApplicationContext(),"str datanasc: "+pessoa.getStrDataNascimento() ,Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getApplicationContext(),"sexo: "+pessoa.getSexo() ,Toast.LENGTH_SHORT).show();
-                            //sessaoUsuario.setPessoaLogada(pessoa);
+                            sessaoUsuario.setPessoaLogada(pessoa);
 
                             startHomeActivity();
                         }catch (Exception e){

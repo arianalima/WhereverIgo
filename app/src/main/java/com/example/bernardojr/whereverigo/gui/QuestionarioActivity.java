@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -25,18 +26,15 @@ import static android.R.attr.windowElevation;
 
 public class QuestionarioActivity extends AppCompatActivity {
 
-    private ProgressBar progressBar;
-    private RecyclerView recyclerView;
     private Button btnProx;
-    private int QUESTINARIO_PROGRESSO = 20;
 
-    GridView gridView;
-    String tagsList[] = {"praia", "frio", "romance", "radical", "família", "culinária", "sossego", "história", "religião"};
-    int imagensList[] = {R.mipmap.praia,R.mipmap.frio,R.mipmap.romantico,R.mipmap.esporte_radical, R.mipmap.familia,
+    private GridView gridView;
+    private String tagsList[] = {"praia", "frio", "romantico", "radical", "familia", "culinária", "calmo", "historico", "religioso"};
+    private int escolha[] = {0,0,0,0,0,0,0,0,0};
+    private int imagensList[] = {R.mipmap.praia,R.mipmap.frio,R.mipmap.romantico,R.mipmap.esporte_radical, R.mipmap.familia,
             R.mipmap.gastronomia,R.mipmap.tranquilo,R.mipmap.historico, R.mipmap.religioso};
 
-    int checked = 0;
-    int selectedPosition = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,63 +43,28 @@ public class QuestionarioActivity extends AppCompatActivity {
         btnProx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent(QuestionarioActivity.this,AvaliacaoLocaisActivity.class);
-                startActivity(it);
-                /*if (progressBar.getProgress() == 100){
-                    Intent it = new Intent(getApplicationContext(),AvaliacaoLocaisActivity.class);
-                    //Intent it = new Intent(getApplicationContext(),HomeActivity.class);
-                    startActivity(it);
+                String resultado = "";
+                for (int i = 0; i < escolha.length; i++){
+                    if (escolha[i] == 1){
+                        resultado = resultado.concat(tagsList[i] + " ");
+                    }
                 }
-                proximo();*/
+                Intent it = new Intent(QuestionarioActivity.this,AvaliacaoLocaisActivity.class);
+                it.putExtra("RESULTADO",resultado);
+                startActivity(it);
+                finish();
             }
         });
 
 
-        QuestionarioActivity.GridAdapter gridAdapter = new QuestionarioActivity.GridAdapter(QuestionarioActivity.this,imagensList,tagsList);
+        GridAdapter gridAdapter = new GridAdapter(QuestionarioActivity.this,imagensList,tagsList);
         gridView.setAdapter(gridAdapter);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(QuestionarioActivity.this, "Tag:"+tagsList[position] , Toast.LENGTH_SHORT).show();
-                Log.i("Clicked", "Tag###########");
-                //img_select.setVisibility(View.INVISIBLE);
-                gridView.setFocusable(true);
-                gridView.setEnabled(true);
-
-                if(checked==0){
-                    gridView.setBackgroundResource(R.drawable.ic_menu_camera);
-                    //GreetingTextContainer greet = GreetingTextContainer.getSingletonObject();
-                    //greet.setPosition(position);
-                    checked =1;
-                }
-                else
-                {
-                    gridView.setBackgroundResource(0);
-                    checked=0;
-                }
-            }
-        });
     }
 
     private void initViews(){
-        //progressBar = (ProgressBar) findViewById(R.id.questionario_progress_bar);
-        //progressBar.setProgress(0);
         btnProx = (Button) findViewById(R.id.questionario_btn_prox);
         gridView = (GridView) findViewById(R.id.gridView);
-        //recyclerView = (RecyclerView) findViewById(questionario_recycler_view);
-    }
-
-    private void proximo(){
-        if (progressBar.getProgress() <= 99 - QUESTINARIO_PROGRESSO){
-            progressBar.incrementProgressBy(QUESTINARIO_PROGRESSO);
-            btnProx.setText(R.string.questionario_btn_prox);
-        }else {
-            btnProx.setText(R.string.questionario_btn_terminar);
-            progressBar.incrementProgressBy(QUESTINARIO_PROGRESSO);
-        }
-
     }
 
     private class GridAdapter extends BaseAdapter{
@@ -141,8 +104,21 @@ public class QuestionarioActivity extends AppCompatActivity {
                 inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 gridView = inflater.inflate(R.layout.image_grid_item, null);
             }
-
+            final int posicao = position;
             ImageView imagem = (ImageView) gridView.findViewById(R.id.tagImagem);
+            final CheckBox checkBox = (CheckBox) gridView.findViewById(R.id.itemCheckBox);
+
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (checkBox.isChecked()){
+                        escolha[posicao] = 1;
+                    }else {
+                        escolha[posicao] = 0;
+                    }
+
+                }
+            });
             imagem.setScaleType(ImageView.ScaleType.FIT_XY);
             TextView tag = (TextView) gridView.findViewById(R.id.tagNome);
 

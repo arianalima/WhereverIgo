@@ -21,4 +21,26 @@ public interface LocalService {
 
     @POST("locais")
     Call<ArrayList<Local>> getLocais();
+
+    @FormUrlEncoded
+    @POST("locaisportag")
+    Call<ArrayList<Local>> getLocaisPorTag(
+            @Field("tags") String tags
+    );
+
+    @FormUrlEncoded
+    @POST("locaisultimapesquisa")
+    Call<ArrayList<Local>> getUltimaPesquisa(
+            @Field("id") int id
+    );
+
+
+    @FormUrlEncoded
+    @POST("locaiscomnota")
+    Call<ArrayList<Local>> sendLugarComNota(
+            @Field("id") int id,
+            @Field("lugares") String lugares,
+            @Field("notas") String notas,
+            @Field("todoslocais") String todoslocais
+    );
 }

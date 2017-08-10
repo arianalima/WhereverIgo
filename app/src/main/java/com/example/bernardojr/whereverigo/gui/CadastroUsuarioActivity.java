@@ -288,7 +288,7 @@ public class CadastroUsuarioActivity extends Activity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if(response.isSuccessful()){
-                    if (response.body().equals("success")){
+                    if (response.body().equals("sucess")){
                         Toast.makeText(getApplication(),R.string.cadastro_sucess,Toast.LENGTH_SHORT).show();
                         finish();
                     }else {

@@ -58,7 +58,7 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String resposta = intent.getExtras().getString("RESULTADO");
-        Toast.makeText(getApplicationContext(),resposta,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),resposta,Toast.LENGTH_SHORT).show();
 
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
 
@@ -206,11 +206,16 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
                         todosLocais = todosLocais.concat(local.getCidade() + "/");
                     }
                     Collections.shuffle(novosLocais);
-                    for (int i = 0; i < 10;i++){
+                    int quantidade;
+                    if (novosLocais.size() >= 5) {
+                        quantidade = 5;
+                    }else {
+                        quantidade = novosLocais.size();
+                    }
+                    for (int i = 0; i < quantidade; i++) {
                         locais.add(novosLocais.get(i));
                         notas.add(0f);
                     }
-
                     if(locais.size() != 0){
                         adapter = new LocalAdapter(locais);
                         recyclerView.setAdapter(adapter);
@@ -250,15 +255,18 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
 
         LocalService localService = retrofit.create(LocalService.class);
 
-        Call<ArrayList<Local>> locaisCall = localService.sendLugarComNota(id,lugares,notas,todosLocais);
 
-        locaisCall.enqueue(new Callback<ArrayList<Local>>() {
+        Call<String> locaisCall = localService.sendLugarComNota(id,lugares,notas,todosLocais);
+
+        locaisCall.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<ArrayList<Local>> call, Response<ArrayList<Local>> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if(response.isSuccessful()){
+                    String resposta = response.body();
+                    Toast.makeText(getApplicationContext(),response.body(),Toast.LENGTH_SHORT).show();
                     if (response.body().equals("sucess")){
-                        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-                        finish();
+                        //startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                        //finish();
                     }else {
                         Toast.makeText(getApplicationContext(), R.string.erro_failure_metodo,Toast.LENGTH_SHORT).show();
                     }
@@ -268,8 +276,8 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Local>> call, Throwable t) {
-                Toast.makeText(context,R.string.erro_conexao,Toast.LENGTH_LONG).show();
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(context,t.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
     }

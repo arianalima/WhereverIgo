@@ -37,7 +37,7 @@ public interface LocalService {
 
     @FormUrlEncoded
     @POST("locaiscomnota")
-    Call<ArrayList<Local>> sendLugarComNota(
+    Call<String> sendLugarComNota(
             @Field("id") int id,
             @Field("lugares") String lugares,
             @Field("notas") String notas,

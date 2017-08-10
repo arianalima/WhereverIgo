@@ -51,6 +51,7 @@
 
     <!--Tela Locais Sugeridos-->
     <string name="locais_txt_mensagem">Sem ideias? Veja algumas dicas de destino!</string>
+    <string name="logout">Logout</string>
 
     <!--Tela Questionário-->
     <string name="questionario_txt_mensagem">Marque o que mais te indentifica</string>

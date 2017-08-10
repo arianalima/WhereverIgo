@@ -29,7 +29,7 @@ public class QuestionarioActivity extends AppCompatActivity {
     private Button btnProx;
 
     private GridView gridView;
-    private String tagsList[] = {"praia", "frio", "romantico", "radical", "familia", "culinária", "calmo", "historico", "religioso"};
+    private String tagsList[] = {"praia", "frio", "romântico", "radical", "família", "culinária", "calmo", "histórico", "religioso"};
     private int escolha[] = {0,0,0,0,0,0,0,0,0};
     private int imagensList[] = {R.mipmap.praia,R.mipmap.frio,R.mipmap.romantico,R.mipmap.esporte_radical, R.mipmap.familia,
             R.mipmap.gastronomia,R.mipmap.tranquilo,R.mipmap.historico, R.mipmap.religioso};
@@ -43,6 +43,7 @@ public class QuestionarioActivity extends AppCompatActivity {
         btnProx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (verificarCheckBox(escolha)){
                 String resultado = "";
                 for (int i = 0; i < escolha.length; i++){
                     if (escolha[i] == 1){
@@ -53,6 +54,9 @@ public class QuestionarioActivity extends AppCompatActivity {
                 it.putExtra("RESULTADO",resultado);
                 startActivity(it);
                 finish();
+                }else {
+                    Toast.makeText(getApplicationContext(),"Selecione ao menos uma tag",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -61,7 +65,16 @@ public class QuestionarioActivity extends AppCompatActivity {
         gridView.setAdapter(gridAdapter);
 
     }
+    // no mínimo uma tag checada, return true
+    public boolean verificarCheckBox(int [] escolha){
+        for (int i = 0; i < escolha.length; i++){
+            if (escolha[i] != 0){
+                return true;
+            }
+        }
+        return false;
 
+    }
     private void initViews(){
         btnProx = (Button) findViewById(R.id.questionario_btn_prox);
         gridView = (GridView) findViewById(R.id.gridView);

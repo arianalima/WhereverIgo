@@ -19,7 +19,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.appodeal.ads.Appodeal;
+import com.appodeal.ads.InterstitialCallbacks;
+import com.appodeal.ads.UserSettings;
 import com.example.bernardojr.whereverigo.R;
+import com.example.bernardojr.whereverigo.dominio.Pessoa;
+import com.example.bernardojr.whereverigo.negocio.SessaoUsuario;
+
+import java.text.SimpleDateFormat;
 
 import static android.R.attr.checked;
 import static android.R.attr.windowElevation;
@@ -29,7 +36,7 @@ public class QuestionarioActivity extends AppCompatActivity {
     private Button btnProx;
 
     private GridView gridView;
-    private String tagsList[] = {"praia", "frio", "romântico", "radical", "família", "culinária", "calmo", "histórico", "religioso"};
+    private String tagsList[] = {"praia", "frio", "romântico", "radical", "família", "gastronomia", "calmo", "histórico", "religioso"};
     private int escolha[] = {0,0,0,0,0,0,0,0,0};
     private int imagensList[] = {R.mipmap.praia,R.mipmap.frio,R.mipmap.romantico,R.mipmap.esporte_radical, R.mipmap.familia,
             R.mipmap.gastronomia,R.mipmap.tranquilo,R.mipmap.historico, R.mipmap.religioso};
@@ -39,6 +46,19 @@ public class QuestionarioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionario);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        UserSettings userSettings = Appodeal.getUserSettings(this);
+        Pessoa pessoaLogada = SessaoUsuario.getInstancia().getPessoaLogada();
+        userSettings.setBirthday(pessoaLogada.getStrDataNascimento());
+        if (pessoaLogada.getSexo() == "Feminino"){
+            userSettings.setGender(UserSettings.Gender.FEMALE);
+        }else {
+            userSettings.setGender(UserSettings.Gender.MALE);
+        }
+        Appodeal.show(this, Appodeal.BANNER_BOTTOM);
+
         initViews();
         btnProx.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +85,46 @@ public class QuestionarioActivity extends AppCompatActivity {
         gridView.setAdapter(gridAdapter);
 
     }
+    private boolean gettingOut = false;
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (gettingOut) {
+            super.onBackPressed();
+            finish();
+        }else{
+            gettingOut = true;
+            Appodeal.show(this, Appodeal.INTERSTITIAL);
+
+            Appodeal.setInterstitialCallbacks(new InterstitialCallbacks() {
+                @Override
+                public void onInterstitialLoaded(boolean b) {
+
+                }
+
+                @Override
+                public void onInterstitialFailedToLoad() {
+
+                }
+
+                @Override
+                public void onInterstitialShown() {
+
+                }
+
+                @Override
+                public void onInterstitialClicked() {
+
+                }
+
+                @Override
+                public void onInterstitialClosed() {
+                    onBackPressed();
+                }
+            });
+        }
+    }
+
     // no mínimo uma tag checada, return true
     public boolean verificarCheckBox(int [] escolha){
         for (int i = 0; i < escolha.length; i++){

@@ -21,12 +21,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.appodeal.ads.UserSettings;
 import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Local;
+import com.example.bernardojr.whereverigo.dominio.Pessoa;
 import com.example.bernardojr.whereverigo.infra.ImagemRetangular;
 import com.example.bernardojr.whereverigo.negocio.LocalService;
 import com.example.bernardojr.whereverigo.negocio.SessaoUsuario;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +44,8 @@ import com.appodeal.ads.InterstitialCallbacks;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     private RecyclerView recyclerView;
     private ImageView banner;
@@ -63,6 +68,15 @@ public class HomeActivity extends AppCompatActivity
 
         //Appodeal
         //Appodeal.show(this, Appodeal.INTERSTITIAL)
+        UserSettings userSettings = Appodeal.getUserSettings(this);
+        Pessoa pessoaLogada = SessaoUsuario.getInstancia().getPessoaLogada();
+        userSettings.setBirthday(pessoaLogada.getStrDataNascimento());
+        if (pessoaLogada.getSexo() == "Feminino"){
+            userSettings.setGender(UserSettings.Gender.FEMALE);
+        }else {
+            userSettings.setGender(UserSettings.Gender.MALE);
+        }
+
         Appodeal.initialize(this, appKey, Appodeal.INTERSTITIAL | Appodeal.BANNER | Appodeal.MREC);
         Appodeal.setTesting(true);
         Appodeal.show(this, Appodeal.BANNER_BOTTOM);
@@ -257,7 +271,7 @@ public class HomeActivity extends AppCompatActivity
     public void requesLocais(final Context context){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.246.13.221:8080/WhereverIGo/rest/LocalService/")
+                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/LocalService/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

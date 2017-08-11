@@ -94,7 +94,6 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        requesLocais(context);
 
     }
 
@@ -102,6 +101,7 @@ public class HomeActivity extends AppCompatActivity
     public void onResume() {
         super.onResume();
         Appodeal.onResume(this, Appodeal.BANNER);
+        requesLocais(getApplicationContext());
     }
 
     private boolean gettingOut = false;

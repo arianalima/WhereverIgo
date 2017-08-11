@@ -263,10 +263,9 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
             public void onResponse(Call<String> call, Response<String> response) {
                 if(response.isSuccessful()){
                     String resposta = response.body();
-                    Toast.makeText(getApplicationContext(),response.body(),Toast.LENGTH_SHORT).show();
                     if (response.body().equals("sucess")){
-                        //startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-                        //finish();
+                        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                        finish();
                     }else {
                         Toast.makeText(getApplicationContext(), R.string.erro_failure_metodo,Toast.LENGTH_SHORT).show();
                     }

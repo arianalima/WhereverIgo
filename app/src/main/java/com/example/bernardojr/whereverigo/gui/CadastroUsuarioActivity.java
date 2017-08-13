@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -15,7 +16,6 @@ import android.widget.Toast;
 import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Usuario;
 import com.example.bernardojr.whereverigo.dominio.Pessoa;
-import com.example.bernardojr.whereverigo.negocio.UsuarioNegocio;
 import com.example.bernardojr.whereverigo.negocio.UsuarioService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -37,8 +37,6 @@ public class CadastroUsuarioActivity extends Activity {
     private Button buttonCadastrar;
     private RadioGroup radioGroup;
     private RadioButton buttonMasculino, buttonFeminino;
-
-    private UsuarioNegocio usuarioNegocio = UsuarioNegocio.getInstancia();
 
     private Calendar calendar = Calendar.getInstance();
     private int year;
@@ -124,14 +122,15 @@ public class CadastroUsuarioActivity extends Activity {
         email = textEmail.getText().toString().trim();
         senha = textSenha.getText().toString().trim();
         repetirSenha = textRepetirSenha.getText().toString().trim();
-        //sexoEscolhido = adicionandoGenero();
         dataNascimentoString = textDataNascimento.getText().toString().trim();
+
         try {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        dataNascimento = dateFormat.parse(dataNascimentoString);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            dataNascimento = dateFormat.parse(dataNascimentoString);
         }catch (ParseException e){
-            Toast.makeText(getApplication(), "Preencha a data de nascimento", Toast.LENGTH_LONG).show();
+            Log.d("DATA NASCIMENTO", "Exception: " + e.getMessage().toString());
         }
+
         return (!validaCamposVazios(nome,email,senha,repetirSenha, dataNascimentoString,sexoEscolhido)&&
                 !camposComEspacos(email,senha,repetirSenha, dataNascimentoString, dataNascimento)&&
                 tamanhoPreenchido(senha,repetirSenha)&&validarEmail(email));
@@ -139,6 +138,7 @@ public class CadastroUsuarioActivity extends Activity {
 
     private boolean validaCamposVazios(String nome, String email, String senha, String repetirSenha, String dataNascimentoString, String sexoEscolhido){
         boolean validacao = false;
+
         if (TextUtils.isEmpty(nome)){
             validacao = true;
             textNome.requestFocus();
@@ -159,7 +159,9 @@ public class CadastroUsuarioActivity extends Activity {
             validacao = true;
             textDataNascimento.requestFocus();
             textDataNascimento.setError(getString(R.string.campo_vazio));
-        }return validacao;
+        }
+        return validacao;
+
     }
 
     private boolean camposComEspacos(String email, String senha, String repetirSenha, String dataNascimentoString, Date dataNascimento){
@@ -179,14 +181,10 @@ public class CadastroUsuarioActivity extends Activity {
             textRepetirSenha.requestFocus();
             textRepetirSenha.setError(getString(R.string.campo_senha_diferentes));
             return true;
-        }else if(dataNascimentoString.indexOf(" ") != -1) {
+        }else if(dataNascimentoString.indexOf(" ") != -1 || dataNascimento == null) {
             textDataNascimento.requestFocus();
             textDataNascimento.setError(getString(R.string.campo_data_nascimento));
             return true;
-        }else if (dataNascimento == null){
-            textDataNascimento.requestFocus();
-            textDataNascimento.setError(getString(R.string.campo_data_nascimento));
-            return  true;
         }else if (radioGroup.getCheckedRadioButtonId() == -1  && genero == null) {
             Toast.makeText(getApplication(), "Favor preencha a opção genero", Toast.LENGTH_LONG).show();
             return true;
@@ -251,13 +249,8 @@ public class CadastroUsuarioActivity extends Activity {
                     String dat = df.format(dataNascimento);
                     cadastrarUsuario(email,senha,genero,nome,dat);
 
-                    //usuarioNegocio.inserirUsuario(pessoa);
-                    //Toast.makeText(getApplication(),"Cadastro realizado!",Toast.LENGTH_SHORT).show();
-                    //chamar metodo para retornar a LoginActivity
-
-
                 }catch (Exception e){
-                    //Toast.makeText(getApplication(),"Usuário não cadastrado",Toast.LENGTH_LONG).show();
+                    Log.d("USUARIO", "Exception: " + e.getMessage().toString());
                 }
             }
     }
@@ -277,7 +270,7 @@ public class CadastroUsuarioActivity extends Activity {
         //leut: http://10.246.13.221:8080/WhereverIGo/rest/UsuarioService/ ou 192.168.31.191
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/UsuarioService/")
+                .baseUrl("http://192.168.31.191:8080/WhereverIGo/rest/UsuarioService/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
@@ -294,7 +287,6 @@ public class CadastroUsuarioActivity extends Activity {
                     }else {
                         textEmail.requestFocus();
                         textEmail.setError(getResources().getString(R.string.email_duplicado));
-                        //Toast.makeText(getApplicationContext(),R.string.email_duplicado,Toast.LENGTH_SHORT).show();
                     }
 
 

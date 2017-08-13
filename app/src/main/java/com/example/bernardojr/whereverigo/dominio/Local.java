@@ -1,13 +1,5 @@
 package com.example.bernardojr.whereverigo.dominio;
 
-import android.widget.ImageView;
-
-import com.example.bernardojr.whereverigo.R;
-
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Local {
     private int id;
     private String cidade;

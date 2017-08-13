@@ -1,13 +1,8 @@
 package com.example.bernardojr.whereverigo.dominio;
 
-
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 public class Pessoa{
-
-    // link do tutorial : https://futurestud.io/tutorials/retrofit-how-to-integrate-xml-converter
 
     private int id;
     private Usuario usuario;
@@ -15,17 +10,6 @@ public class Pessoa{
     private Date dataNascimento;
     private String sexo;
     private String strDataNascimento;
-/*
-    @Element(name = "tags")
-    private List<Tag> tags;
-
-    @Element(name = "avaliacoes")
-    private List<Avaliacao> avaliacoes;
-
-    @Element(name = "recomendacoes")
-    private List<Local> locaisRecomendados;
-*/
-
 
     public Pessoa() {
     }

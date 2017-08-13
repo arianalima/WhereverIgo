@@ -3,7 +3,6 @@ package com.example.bernardojr.whereverigo.infra;
 import android.content.Context;
 import android.util.AttributeSet;
 
-
 public class ImagemRetangular extends android.support.v7.widget.AppCompatImageView {
     public ImagemRetangular(Context context) {
         super(context);

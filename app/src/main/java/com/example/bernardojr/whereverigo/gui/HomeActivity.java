@@ -48,7 +48,6 @@ public class HomeActivity extends AppCompatActivity
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     private RecyclerView recyclerView;
-    private ImageView banner;
     private HomeActivity.LocaisAdapter adapter;
     private List<Local> locais = new ArrayList<>();
     private final String appKey = "30b007486c65d1794e143bbcd4189a5f30d27ab806598290";
@@ -66,8 +65,6 @@ public class HomeActivity extends AppCompatActivity
         recyclerView.setAdapter(null);
         recyclerView.addItemDecoration(new HomeActivity.SpacesItemDecoration(24));
 
-        //Appodeal
-        //Appodeal.show(this, Appodeal.INTERSTITIAL)
         UserSettings userSettings = Appodeal.getUserSettings(this);
         Pessoa pessoaLogada = SessaoUsuario.getInstancia().getPessoaLogada();
         userSettings.setBirthday(pessoaLogada.getStrDataNascimento());
@@ -83,8 +80,6 @@ public class HomeActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //banner = (ImageView) findViewById(R.id.locais_banner);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -152,19 +147,15 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.menu_logout) {
             Intent i = new Intent(HomeActivity.this,LoginActivity.class);
             startActivity(i);
@@ -178,9 +169,8 @@ public class HomeActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
+        int id = item.getItemId();
         if (id == R.id.nav_questionario) {
             startQuestionarioActivity();
         }
@@ -188,11 +178,11 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
     }
 
     private void startQuestionarioActivity() {
         Intent i = new Intent(HomeActivity.this,QuestionarioActivity.class);
-        //Intent i = new Intent(HomeActivity.this,AvaliacaoLocaisActivity.class);//alterar dps
         startActivity(i);
     }
 
@@ -208,14 +198,9 @@ public class HomeActivity extends AppCompatActivity
 
         @Override
         public HomeActivity.LocaisHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-//
-//            // Inflate the custom layout
-//            View contactView = inflater.inflate(R.layout.locais_item_adapter, parent, false);
 
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.locais_item_adapter, parent, false);
 
-            // Return a new holder instance
             HomeActivity.LocaisHolder view = new HomeActivity.LocaisHolder(v);
             return view;
         }
@@ -271,7 +256,7 @@ public class HomeActivity extends AppCompatActivity
     public void requesLocais(final Context context){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/LocalService/")
+                .baseUrl("http://192.168.31.191:8080/WhereverIGo/rest/LocalService/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -293,13 +278,8 @@ public class HomeActivity extends AppCompatActivity
                         local.setImagem(id);
                     }
 
-
                     adapter = new HomeActivity.LocaisAdapter(novosLocais);
                     recyclerView.setAdapter(adapter);
-
-
-
-
 
                 }else {
                     Toast.makeText(context, response.code() ,Toast.LENGTH_LONG).show();
@@ -310,9 +290,9 @@ public class HomeActivity extends AppCompatActivity
             public void onFailure(Call<ArrayList<Local>> call, Throwable t) {
                 Toast.makeText(context,t.getMessage(),Toast.LENGTH_LONG).show();
             }
+
         });
+
     }
-
-
 
 }

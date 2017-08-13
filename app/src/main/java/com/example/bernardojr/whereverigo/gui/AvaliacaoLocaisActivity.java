@@ -3,7 +3,6 @@ package com.example.bernardojr.whereverigo.gui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,9 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -47,27 +44,20 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
 
     private Button btnSubmit;
 
-    public static List<Float> getNotas(){
-        return notas;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_avaliacao_locais);
 
         Intent intent = getIntent();
         String resposta = intent.getExtras().getString("RESULTADO");
-        //Toast.makeText(getApplicationContext(),resposta,Toast.LENGTH_SHORT).show();
 
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
-
-
 
         recyclerView = (RecyclerView) findViewById(R.id.avaliacao_locais_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setItemViewCacheSize(10);
-        //adapter = new AvaliacaoLocaisActivity.LocalAdapter(locais);
         recyclerView.setAdapter(null);
         recyclerView.addItemDecoration(new AvaliacaoLocaisActivity.SpacesItemDecoration(24));
         recyclerView.setHasFixedSize(true);
@@ -82,17 +72,19 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
                 String strNotas = "";
                 int id = SessaoUsuario.getInstancia().getPessoaLogada().getId();
                 if (locais != null && notas != null && locais.size() == notas.size()){
+
                     for(int i=0; i<locais.size(); i++){
                         lugares = lugares.concat("" + locais.get(i).getCidade() + "/");
                         strNotas = strNotas.concat("" + notas.get(i) + "/");
                     }
                     sendLocaisComNota(getApplicationContext(),id,lugares,strNotas,todosLocais);
-                }
 
+                }
 
             }
 
         });
+
     }
 
     private class LocalAdapter extends RecyclerView.Adapter<AvaliacaoLocaisActivity.LocalHolder>{
@@ -105,31 +97,30 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
 
         @Override
         public AvaliacaoLocaisActivity.LocalHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-//
-//            // Inflate the custom layout
-//            View contactView = inflater.inflate(R.layout.avaliacao_locais_list_adapter, parent, false);
 
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.avaliacao_locais_list_adapter, parent, false);
 
-            // Return a new holder instance
             AvaliacaoLocaisActivity.LocalHolder view = new AvaliacaoLocaisActivity.LocalHolder(v);
             return view;
+
         }
 
         @Override
         public void onBindViewHolder(final AvaliacaoLocaisActivity.LocalHolder holder, int position) {
+
             holder.cidade.setText(locais.get(position).getCidade());
             holder.estadoPais.setText(locais.get(position).getEstadoPais());
             holder.imagem.setImageResource(locais.get(position).getImagem());
             holder.descricao.setText(locais.get(position).getDescricao());
             final int posicao = position;
+
             holder.ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                 public void onRatingChanged(RatingBar ratingBar, float rating,
                                             boolean fromUser) {
                     notas.set(posicao,rating);
                 }
             });
+
         }
 
         @Override
@@ -143,9 +134,9 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
 
         private TextView cidade;
         private TextView estadoPais;
-        private ImageView imagem;
         private TextView descricao;
 
+        private ImageView imagem;
         private RatingBar ratingBar;
 
 
@@ -157,6 +148,7 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
             descricao = (TextView) itemView.findViewById(R.id.local_adapter_descricao);
             ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
         }
+
     }
 
     private class SpacesItemDecoration extends RecyclerView.ItemDecoration {
@@ -180,12 +172,11 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
     public void requestLocais(final Context context, String string){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/LocalService/")
+                .baseUrl("http://192.168.31.191:8080/WhereverIGo/rest/LocalService/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         LocalService localService = retrofit.create(LocalService.class);
-
 
         Call<ArrayList<Local>> locaisCall = localService.getLocaisPorTag(string);
 
@@ -199,13 +190,16 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
                     Local local;
                     ArrayList<Local> novosLocais = response.body();
                     todosLocais = "";
+
                     for(int i = 0; i < novosLocais.size(); i++){
                         local = novosLocais.get(i);
                         int id = context.getResources().getIdentifier(local.getStrImagem(), "drawable", context.getPackageName());
                         local.setImagem(id);
                         todosLocais = todosLocais.concat(local.getCidade() + "/");
                     }
+
                     Collections.shuffle(novosLocais);
+
                     int quantidade;
                     if (novosLocais.size() >= 5) {
                         quantidade = 5;
@@ -221,12 +215,7 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
                         recyclerView.setAdapter(adapter);
                     }
 
-
-
-
-
-
-                }else {
+                }else{
                     Toast.makeText(context, response.code() ,Toast.LENGTH_LONG).show();
                 }
             }
@@ -235,7 +224,9 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
             public void onFailure(Call<ArrayList<Local>> call, Throwable t) {
                 Toast.makeText(context,t.getMessage(),Toast.LENGTH_LONG).show();
             }
+
         });
+
     }
 
     Gson gson = new GsonBuilder()
@@ -249,12 +240,11 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
     public void sendLocaisComNota(final Context context,int id, String lugares, String notas, String todosLocais){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/LocalService/")
+                .baseUrl("http://192.168.31.191:8080/WhereverIGo/rest/LocalService/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         LocalService localService = retrofit.create(LocalService.class);
-
 
         Call<String> locaisCall = localService.sendLugarComNota(id,lugares,notas,todosLocais);
 
@@ -262,7 +252,6 @@ public class AvaliacaoLocaisActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if(response.isSuccessful()){
-                    String resposta = response.body();
                     if (response.body().equals("sucess")){
                         startActivity(new Intent(getApplicationContext(),HomeActivity.class));
                         finish();

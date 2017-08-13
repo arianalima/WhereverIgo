@@ -4,32 +4,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appodeal.ads.Appodeal;
 import com.appodeal.ads.InterstitialCallbacks;
 import com.appodeal.ads.UserSettings;
+
 import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Pessoa;
 import com.example.bernardojr.whereverigo.negocio.SessaoUsuario;
-
-import java.text.SimpleDateFormat;
-
-import static android.R.attr.checked;
-import static android.R.attr.windowElevation;
 
 public class QuestionarioActivity extends AppCompatActivity {
 
@@ -47,22 +40,24 @@ public class QuestionarioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionario);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
         UserSettings userSettings = Appodeal.getUserSettings(this);
         Pessoa pessoaLogada = SessaoUsuario.getInstancia().getPessoaLogada();
         userSettings.setBirthday(pessoaLogada.getStrDataNascimento());
+
         if (pessoaLogada.getSexo() == "Feminino"){
             userSettings.setGender(UserSettings.Gender.FEMALE);
         }else {
             userSettings.setGender(UserSettings.Gender.MALE);
         }
+
         Appodeal.show(this, Appodeal.BANNER_BOTTOM);
 
         initViews();
         btnProx.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
                 if (verificarCheckBox(escolha)){
                 String resultado = "";
                 for (int i = 0; i < escolha.length; i++){
@@ -78,8 +73,8 @@ public class QuestionarioActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Selecione ao menos uma tag",Toast.LENGTH_SHORT).show();
                 }
             }
-        });
 
+        });
 
         GridAdapter gridAdapter = new GridAdapter(QuestionarioActivity.this,imagensList,tagsList);
         gridView.setAdapter(gridAdapter);
@@ -125,7 +120,6 @@ public class QuestionarioActivity extends AppCompatActivity {
         }
     }
 
-    // no mínimo uma tag checada, return true
     public boolean verificarCheckBox(int [] escolha){
         for (int i = 0; i < escolha.length; i++){
             if (escolha[i] != 0){
@@ -145,8 +139,6 @@ public class QuestionarioActivity extends AppCompatActivity {
         private String tags[];
         private Context context;
         private LayoutInflater inflater;
-
-
 
         public GridAdapter(Context context, int imagens[], String tags[]){
             this.context = context;
@@ -200,6 +192,7 @@ public class QuestionarioActivity extends AppCompatActivity {
             tag.setText(tags[position]);
             return gridView;
         }
+
     }
 
 }

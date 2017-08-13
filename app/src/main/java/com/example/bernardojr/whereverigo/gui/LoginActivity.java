@@ -14,14 +14,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.appodeal.ads.Appodeal;
-import com.appodeal.ads.UserSettings;
 import com.example.bernardojr.whereverigo.R;
 import com.example.bernardojr.whereverigo.dominio.Pessoa;
-import com.example.bernardojr.whereverigo.dominio.Usuario;
 import com.example.bernardojr.whereverigo.infra.Criptografia;
 import com.example.bernardojr.whereverigo.negocio.SessaoUsuario;
-import com.example.bernardojr.whereverigo.negocio.UsuarioNegocio;
 import com.example.bernardojr.whereverigo.negocio.UsuarioService;
 
 import java.text.SimpleDateFormat;
@@ -47,8 +43,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     private Resources resources;
     private static Context contexto;
-    private Usuario usuario;
-    private UsuarioNegocio usuarioNegocio;
     private Criptografia criptografia;
     private String senhaCriptografada;
 
@@ -75,11 +69,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         edtEmail = (EditText) findViewById(R.id.userEmail);
         edtSenha = (EditText) findViewById(R.id.userSenha);
 
-
-
         initViews();
-
-
 
     }
 
@@ -89,7 +79,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         sessaoUsuario.setPessoaLogada(null);
         edtSenha.setText(null);
         edtEmail.setText(null);
-        //usuarioNegocio=UsuarioNegocio.getInstancia(this);
     }
 
 
@@ -172,14 +161,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 senhaCriptografada = criptografia.getSenhaCriptografada();
                 getUsuario(login,senha);
 
-                //usuario = usuarioNegocio.logar(login, senhaCriptografada);
-                //GuiUtil.exibirSaudacao(this);
-
             }catch (Exception e){
-                //WhereverIgoException
                 Toast.makeText(getApplication(), e.getMessage(), Toast.LENGTH_LONG).show();
-                //GuiUtil.exibirMsg(LoginActivity.this, e.getMessage());
-
             }
         }
     }
@@ -202,7 +185,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         //leut: http://10.246.13.221:8080/WhereverIGo/rest/UsuarioService/ ou 192.168.31.191
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.25.55:8080/WhereverIGo/rest/UsuarioService/")
+                .baseUrl("http://192.168.31.191:8080/WhereverIGo/rest/UsuarioService/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -215,7 +198,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             @Override
             public void onResponse(Call<Pessoa> call, Response<Pessoa> response) {
                 if(response.isSuccessful()){
-                    //ResponseBody rb = response.body();
                     Pessoa pessoa = response.body();
                     if(pessoa != null){
                         try {
@@ -241,7 +223,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             @Override
             public void onFailure(Call<Pessoa> call, Throwable t) {
                 Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();
-                //Toast.makeText(getApplicationContext(),R.string.server_erro,Toast.LENGTH_LONG).show();
             }
         });
     }
